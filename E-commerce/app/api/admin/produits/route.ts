@@ -3,32 +3,16 @@ import { SchemaAjouterProduits } from "@/app/(schema)/produits/SchemaProduits";
 import { prisma } from "@/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { reponseApiProduit } from "./(interface-types)/interface";
+import { AccesAdmin } from "@/app/utils/SessionAdmin";
 
 
 export async function POST(request: NextRequest) {
-  const IdUtilisateur = "cm95g4yuq000girjgiaapylb0";
-
-  const Utilisateur = await prisma.user.findUnique({
-    where: { id: IdUtilisateur },
-    select: { role: true },
-  });
-
-  if (!Utilisateur)
-    return NextResponse.json(
-      { message: "Vous devez vous connectez " },
-      { status: 401 }
-    );
-
-  const admin = Utilisateur.role === "Admin";
-
-  if (!admin)
-    return NextResponse.json(
-      { message: "Vous n'etes pas autorisé a faire cela " },
-      { status: 403 }
-    );
-
+    const Admin = await AccesAdmin();
+    
+    if (Admin !== true) {
+        return Admin; 
+    }
   const data = await request.json();
-
   const validation = SchemaAjouterProduits.safeParse(data);
 
   if (!validation.success) {
@@ -37,14 +21,10 @@ export async function POST(request: NextRequest) {
       { status: 400 }
     );
   }
-
   try {
-
     const ProduitAvecPromotion = { 
-        ...validation.data, 
-        enPromotion: validation.data.prixPromo !== undefined && 
-        validation.data.prixPromo !== null && 
-        validation.data.prixPromo > 0
+       ...validation.data, 
+       enPromotion : validation.data.prixPromo !== undefined && validation.data.prixPromo !== null && validation.data.prixPromo > 0 ? true : false
       };
       
     const nouveauproduit: reponseApiProduit = await prisma.produit.create({
