@@ -1,24 +1,12 @@
+
 import { SchemaAjouterProduits } from "@/app/(schema)/produits/SchemaProduits";
 import { prisma } from "@/prisma";
-import { Categorie } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
+import { reponseApiProduit } from "./(interface-types)/interface";
 
-interface reponseApi {
-    nom: string;
-    url: string;
-    description: string;
-    prix: number;
-    quantiteStock: number;
-    categorie: Categorie;
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
-    prixPromo: number | null;
-    enPromotion: boolean;
-}
 
 export async function POST(request: NextRequest) {
-  const IdUtilisateur = "cm95delf50000ir20pth5w76p";
+  const IdUtilisateur = "cm95g4yuq000girjgiaapylb0";
 
   const Utilisateur = await prisma.user.findUnique({
     where: { id: IdUtilisateur },
@@ -36,7 +24,7 @@ export async function POST(request: NextRequest) {
   if (!admin)
     return NextResponse.json(
       { message: "Vous n'etes pas autorisé a faire cela " },
-      { status: 403 } 
+      { status: 403 }
     );
 
   const data = await request.json();
@@ -51,21 +39,16 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const produitExistant = await prisma.produit.findUnique({
-        where: {
-          url: validation.data.url
-        }
-      });
-    
-      if (produitExistant) {
-        return NextResponse.json(
-          { message: "Un produit avec cette URL existe déjà" },
-          { status: 400 }
-        );
-      }
 
-    const nouveauproduit: reponseApi = await prisma.produit.create({
-      data: validation.data,
+    const ProduitAvecPromotion = { 
+        ...validation.data, 
+        enPromotion: validation.data.prixPromo !== undefined && 
+        validation.data.prixPromo !== null && 
+        validation.data.prixPromo > 0
+      };
+      
+    const nouveauproduit: reponseApiProduit = await prisma.produit.create({
+      data: ProduitAvecPromotion,
     });
     return NextResponse.json(
       { message: "Produit ajouté avec succès", produit: nouveauproduit },
@@ -73,7 +56,7 @@ export async function POST(request: NextRequest) {
     );
   } catch (error) {
     console.error("Erreur lors de l'ajout du produit:", error);
-    
+
     return NextResponse.json(
       { message: "Une erreur est survenue lors de l'ajout du produit" },
       { status: 500 }

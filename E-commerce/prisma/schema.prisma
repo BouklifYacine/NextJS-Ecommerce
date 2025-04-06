@@ -132,10 +132,9 @@ model Adresse {
 model Produit {
   id               String            @id @default(cuid())
   nom              String
-  url              String            @unique
   description      String            @db.Text
   prix             Float
-  // prixPromo         Float?
+  prixPromo         Float?
   quantiteStock    Int               @default(0)
   enPromotion      Boolean           @default(false)
   categorie        Categorie // Utilise directement l'enum
