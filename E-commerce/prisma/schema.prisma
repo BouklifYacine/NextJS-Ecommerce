@@ -17,20 +17,18 @@ model User {
   role             Roles           @default(utilisateur)
   resetToken       String?
   resetTokenExpiry DateTime?
-  accounts         Account[]
-  sessions         Session[]
-  abonnement       Abonnement?
-  plan             Plan            @default(free)
-  clientId         String?         @unique
-  Authenticator    Authenticator[]
-  createdAt        DateTime        @default(now())
-  updatedAt        DateTime        @updatedAt
-  
-  // Relations pour l'e-commerce
   adresses         Adresse[]
   commandes        Commande[]
   avis             Avis[]
+   abonnement       Abonnement?
+  plan             Plan            @default(free)
+  clientId         String?         @unique
   favoris          Favori[]
+  accounts         Account[]
+  sessions         Session[]
+  Authenticator    Authenticator[]
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
 }
 
 model Account {
@@ -45,9 +43,9 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
-  user              User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt         DateTime         @default(now())
-  updatedAt         DateTime         @updatedAt
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 
   @@id([provider, providerAccountId])
 }
@@ -84,14 +82,14 @@ model Authenticator {
 }
 
 model Abonnement {
-  id                String         @id @default(cuid())
-  userId            String         @unique
-  plan              Plan
-  periode           PlanAbonnement
-  datedebut         DateTime       @default(now())
-  datefin           DateTime       @updatedAt
-  user              User           @relation(fields: [userId], references: [id])
-  economiesRealisees Float         @default(0)
+  id                 String         @id @default(cuid())
+  userId             String         @unique
+  plan               Plan
+  periode            PlanAbonnement
+  datedebut          DateTime       @default(now())
+  datefin            DateTime       @updatedAt
+  user               User           @relation(fields: [userId], references: [id])
+  economiesRealisees Float          @default(0)
   codeAnniversaire   String?
 }
 
@@ -113,10 +111,9 @@ enum PlanAbonnement {
 enum Categorie {
   ELECTRONIQUE
   INFORMATIQUE
-  GAMING 
+  GAMING
   MOBILIER
 }
-
 
 model Adresse {
   id                String     @id @default(cuid())
@@ -133,97 +130,97 @@ model Adresse {
 }
 
 model Produit {
-  id                String            @id @default(cuid())
-  nom               String
-  url               String            @unique
-  description       String            @db.Text
-  prix              Float
+  id               String            @id @default(cuid())
+  nom              String
+  url              String            @unique
+  description      String            @db.Text
+  prix             Float
   // prixPromo         Float?
-  quantiteStock     Int               @default(0)
-  enPromotion       Boolean           @default(false)
-  categorie         Categorie         // Utilise directement l'enum
-  images            ImageProduit[]
-  avis              Avis[]
-  produitCommandes  CommandeProduit[]
-  favoris           Favori[]
-  createdAt         DateTime          @default(now())
-  updatedAt         DateTime          @updatedAt
+  quantiteStock    Int               @default(0)
+  enPromotion      Boolean           @default(false)
+  categorie        Categorie // Utilise directement l'enum
+  images           ImageProduit[]
+  avis             Avis[]
+  produitCommandes CommandeProduit[]
+  favoris          Favori[]
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
 }
 
 model ImageProduit {
-  id          String    @id @default(cuid())
-  produitId   String
-  produit     Produit   @relation(fields: [produitId], references: [id], onDelete: Cascade)
-  urlImage    String    // URL vers Cloudinary
-  principale  Boolean   @default(false)
-  ordre       Int       @default(0)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id         String   @id @default(cuid())
+  produitId  String
+  produit    Produit  @relation(fields: [produitId], references: [id], onDelete: Cascade)
+  urlImage   String // URL vers Cloudinary
+  principale Boolean  @default(false)
+  ordre      Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 model Avis {
-  id              String      @id @default(cuid())
-  userId          String
-  user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  produitId       String
-  produit         Produit     @relation(fields: [produitId], references: [id], onDelete: Cascade)
-  note            Int         
-  commentaire     String?     @db.Text
-  achatVerifie    Boolean     @default(false)
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  produitId    String
+  produit      Produit  @relation(fields: [produitId], references: [id], onDelete: Cascade)
+  note         Int
+  commentaire  String?  @db.Text
+  achatVerifie Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 // Produit favori
 model Favori {
-  id            String      @id @default(cuid())
-  userId        String
-  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  produitId     String
-  produit       Produit     @relation(fields: [produitId], references: [id], onDelete: Cascade)
-  createdAt     DateTime    @default(now())
-  
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  produitId String
+  produit   Produit  @relation(fields: [produitId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
   @@unique([userId, produitId])
 }
 
 model Commande {
-  id                  String            @id @default(cuid())
-  userId              String
-  user                User              @relation(fields: [userId], references: [id])
-  numeroCommande      String            @unique
-  produits            CommandeProduit[]
-  statut              StatutCommande    @default(EN_ATTENTE)
-  
+  id             String            @id @default(cuid())
+  userId         String
+  user           User              @relation(fields: [userId], references: [id])
+  numeroCommande String            @unique
+  produits       CommandeProduit[]
+  statut         StatutCommande    @default(EN_ATTENTE)
+
   // Dates des changements de statut pour l'historique simplifié
-  dateCreation        DateTime          @default(now())
-  dateTraitement      DateTime?         // Quand statut passe à EN_TRAITEMENT
-  dateExpedition      DateTime?         // Quand statut passe à EXPEDIE
-  dateLivraison       DateTime?         // Quand statut passe à LIVRE
-  dateAnnulation      DateTime?         // Quand statut passe à ANNULE
-  
-  total               Float
-  tva                 Float
-  fraisLivraison      Float
-  adresseId           String?
-  adresseLivraison    Adresse?          @relation(fields: [adresseId], references: [id])
-  methodeLivraison    ModeLivraison     @default(STANDARD)
-  annulable           Boolean           @default(true)
-  updatedAt           DateTime          @updatedAt
+  dateCreation   DateTime  @default(now())
+  dateTraitement DateTime? // Quand statut passe à EN_TRAITEMENT
+  dateExpedition DateTime? // Quand statut passe à EXPEDIE
+  dateLivraison  DateTime? // Quand statut passe à LIVRE
+  dateAnnulation DateTime? // Quand statut passe à ANNULE
+
+  total                Float
+  tva                  Float
+  fraisLivraison       Float
+  adresseId            String?
+  adresseLivraison     Adresse?      @relation(fields: [adresseId], references: [id])
+  methodeLivraison     ModeLivraison @default(STANDARD)
+  annulable            Boolean       @default(true)
+  updatedAt            DateTime      @updatedAt
   dateLivraisonEstimee DateTime?
 }
 
 // Produit dans une commande
 model CommandeProduit {
-  id            String    @id @default(cuid())
-  commandeId    String
-  commande      Commande  @relation(fields: [commandeId], references: [id], onDelete: Cascade)
-  produitId     String
-  produit       Produit   @relation(fields: [produitId], references: [id])
-  quantite      Int
-  prixUnitaire  Float
-  prixTotal     Float
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id           String   @id @default(cuid())
+  commandeId   String
+  commande     Commande @relation(fields: [commandeId], references: [id], onDelete: Cascade)
+  produitId    String
+  produit      Produit  @relation(fields: [produitId], references: [id])
+  quantite     Int
+  prixUnitaire Float
+  prixTotal    Float
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 enum StatutCommande {
@@ -237,5 +234,4 @@ enum StatutCommande {
 enum ModeLivraison {
   STANDARD
   EXPRESS
-
 }
