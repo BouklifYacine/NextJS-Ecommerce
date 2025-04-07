@@ -1,7 +1,7 @@
 import React from "react";
 import ComponentPage from "./components/componentspage";
 
-import { AdminMiddlewareClient } from "../(middleware)/AdminMiddlewareClient";
+import { AdminMiddlewareClient } from "../../lib/AdminMiddlewareClient";
 
 const DashboardServer = async () => {
  
