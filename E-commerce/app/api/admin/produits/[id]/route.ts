@@ -13,6 +13,7 @@ export async function DELETE(request : NextRequest, {params} : ParamsId ){
      const Admin = await AccesAdmin();
       if (Admin !== true) { return Admin }
 
+      try {
       const produit = await prisma.produit.findUnique({
         where : {id : id}
       })
@@ -26,5 +27,12 @@ export async function DELETE(request : NextRequest, {params} : ParamsId ){
      const NomProduitSupprimer = produitSupprimer.nom
 
      return NextResponse.json({NomProduitSupprimer})
+      } catch (error) {
+        console.error("Il y'a une erreur dans votre CALL API", error)
+        return NextResponse.json(
+            { message: "Une erreur est survenue lors de la suppression du produit" },
+            { status: 500 }
+          )
+      }
 
 }
