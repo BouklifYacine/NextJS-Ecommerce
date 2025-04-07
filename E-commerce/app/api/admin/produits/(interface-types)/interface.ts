@@ -1,4 +1,13 @@
 import { Categorie } from "@prisma/client";
+interface Image{
+    id: string;
+    produitId: string;
+    urlImage: string;
+    principale: boolean;
+    ordre: number;
+    createdAt: Date;
+    updatedAt: Date;
+}
 
 export interface reponseApiProduit {
   nom: string;
@@ -11,4 +20,6 @@ export interface reponseApiProduit {
   createdAt: Date;
   updatedAt: Date;
   enPromotion: boolean;
+  images : Image[]
+
 }
