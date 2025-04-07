@@ -11,7 +11,6 @@ export async function GET(request: NextRequest) {
   if (Admin !== true) { return Admin }
 
   try {
-    // Récupérer tous les produits avec leurs images
     const produits = await prisma.produit.findMany({
       include: {
         images: true
@@ -28,7 +27,8 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    return NextResponse.json({ produits });
+    return NextResponse.json({ produits
+     });
   } catch (error) {
     console.error("Erreur lors de la récupération des produits:", error);
     
