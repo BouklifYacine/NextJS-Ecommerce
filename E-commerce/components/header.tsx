@@ -4,7 +4,7 @@ import Image from "next/image";
 import React from "react";
 import LogoLiverpool from "@/app/public/Logo_FC_Liverpool.svg.png";
 import Link from "next/link";
-import { CreditCard, DoorOpen, Settings, Table } from "lucide-react";
+import { CreditCard, DoorOpen, Settings, ShoppingBasket, Table } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useSession } from "next-auth/react";
 import { Deconnexion } from "./BoutonDéconnexion";
@@ -22,6 +22,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { AdminAction } from "@/app/(actions)/AdminAction";
+import LogoPanier from "./panier/LogoPanier";
 
 const Header = () => {
   const { data: session } = useSession();
@@ -129,6 +130,7 @@ const Header = () => {
             ) : (
               <div className="flex items-center gap-6">
                 <Deconnexion />
+              
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Avatar className="border border-purple-600 cursor-pointer hover:scale-125 transition-transform">
@@ -193,6 +195,9 @@ const Header = () => {
                     </DropdownMenuGroup>
                   </DropdownMenuContent>
                 </DropdownMenu>
+                
+            <LogoPanier/>
+             
               </div>
             )}
           </nav>
