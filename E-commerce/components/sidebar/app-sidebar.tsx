@@ -13,20 +13,13 @@ import {
   Settings2,
   SquareTerminal,
 } from "lucide-react"
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from "../ui/sidebar"
+import { TeamSwitcher } from "./team-switcher"
+import { NavMain } from "./nav-main"
+import { NavProjects } from "./nav-projects"
+import { NavUser } from "./nav-user"
 
-import { NavMain } from "@/components/nav-main"
-import { NavProjects } from "@/components/nav-projects"
-import { NavUser } from "@/components/nav-user"
-import { TeamSwitcher } from "@/components/team-switcher"
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
-  SidebarRail,
-} from "@/components/ui/sidebar"
 
-// This is sample data.
 const data = {
   user: {
     name: "shadcn",
