@@ -55,6 +55,7 @@ export async function POST(request: NextRequest) {
   }
   try {
     const produitComplet : reponseApiProduit = await prisma.$transaction(async(tx) => {
+      
 
       const {images , ...produitData} = validation.data
 
