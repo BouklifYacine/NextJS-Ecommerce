@@ -64,20 +64,30 @@ const Header = () => {
               href="/"
               className="text-white hover:text-purple-600 opacity-80 transition-colors"
             >
-              Data
+             Accueil
             </Link>
-            <Link
-              href="/"
-              className="text-white hover:text-purple-600 opacity-80 transition-colors"
-            >
-              Classement
-            </Link>
+          
             <Link
               href="/"
               className="text-white hover:text-purple-600 opacity-80 transition-colors"
             >
               Favoris
             </Link>
+
+            <Link
+             href={`/parametres/${session?.user?.id}`}
+              className="text-white hover:text-purple-600 opacity-80 transition-colors"
+            >
+              Paramètres
+            </Link>
+
+            {utilisateurAdmin && <Link
+              href="/dashboard"
+              className="text-white hover:text-purple-600 opacity-80 transition-colors"
+            >
+              Dashboard
+            </Link>}
+            
 
             {!session ? (
               <div className="flex items-center gap-6">

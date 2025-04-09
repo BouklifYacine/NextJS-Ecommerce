@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import Header from "@/components/header";
 import { TableauDeBordClient } from "../TableauDeBordClient";
 import { useStats, useUtilisateurs } from "../(hooks)/UseDashboard";
+import { Skeleton } from "@/components/ui/skeleton"
+
 
 const ComponentPage = () => {
   const [page, setPage] = useState(0);
@@ -24,9 +26,42 @@ const ComponentPage = () => {
     return (
       <>
         <Header />
-        <div className="flex justify-center items-center min-h-screen">
-          <p>CA CHARGE !!!</p>
+        <div className="flex justify-center min-h-screen bg-gray-100">
+  <div className="flex flex-col w-full max-w-7xl p-6">
+
+    <div className="flex flex-wrap gap-4 mb-8">
+      <Skeleton className="h-32 w-[12%] flex-grow rounded-lg" />
+      <Skeleton className="h-32 w-[12%] flex-grow rounded-lg" />
+      <Skeleton className="h-32 w-[12%] flex-grow rounded-lg" /> 
+      <Skeleton className="h-32 w-[12%] flex-grow rounded-lg" />
+      <Skeleton className="h-32 w-[12%] flex-grow rounded-lg" />
+    </div>
+    
+    <div className="flex flex-col md:flex-row gap-6 flex-grow">
+
+      <div className="flex flex-col w-64 flex-shrink-0">
+        <Skeleton className="h-8 w-[150px] mb-4" />
+        <Skeleton className="h-6 w-[120px] mb-3" />
+        <Skeleton className="h-6 w-[140px] mb-3" />
+        <Skeleton className="h-6 w-[130px] mb-3" />
+        <Skeleton className="h-6 w-[150px] mb-3" />
+        <Skeleton className="h-6 w-[120px] mb-3" />
+      </div>
+      
+      <div className="flex flex-col flex-grow">
+        <Skeleton className="h-10 w-[250px] mb-4" />
+        <div className="flex flex-col gap-4 mb-6">
+          <Skeleton className="h-16 w-full" />
+          <Skeleton className="h-16 w-full" />
+          <Skeleton className="h-16 w-full" />
+          <Skeleton className="h-16 w-full" />
+          <Skeleton className="h-16 w-full" />
         </div>
+        <Skeleton className="h-10 w-[120px] mt-auto" />
+      </div>
+    </div>
+  </div>
+</div>
       </>
     );
   }

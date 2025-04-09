@@ -11,6 +11,7 @@ export async function AdminAction() {
 
   const utilisateur = await prisma.user.findUnique({
     where: { id: sessionID },
+    select : {role : true}
   });
   if (utilisateur?.role !== "Admin")
     return { success: false, message: "Vous n'etes pas admin " };
