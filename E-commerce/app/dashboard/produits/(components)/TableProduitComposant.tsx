@@ -12,15 +12,20 @@ import { Checkbox } from "@/components/ui/checkbox";
 import React from "react";
 import { Badge } from "@/components/ui/badge";
 import { useProduits } from "../(hooks)/UseProduits";
+import { Euro } from "lucide-react";
 
 const TableProduitComposant = () => {
-  const { data : produits } = useProduits();
+  const { data : produits , isLoading } = useProduits();
 
   const GestionduStock = (quantitestock: number) => {
     if (quantitestock <= 25) return "bg-red-500 text-white";
     else if (quantitestock >= 26 && quantitestock <= 70 ) return "bg-yellow-500 text-white";
     else return "bg-green-500 text-white";
   };
+
+  if(isLoading) return (
+    <p> Ca charge </p>
+  )
 
   return (
     <div className="rounded-md  p-6 mt-6">
@@ -54,7 +59,7 @@ const TableProduitComposant = () => {
                 <Checkbox />
               </TableCell>
               <TableCell>{produit.nom}</TableCell>
-              <TableCell>{produit.prix}</TableCell>
+              <TableCell><div className="flex items-center">{produit.prix} <Euro size={16} /></div></TableCell>
               <TableCell>
                 <Badge
                   className={
@@ -63,7 +68,8 @@ const TableProduitComposant = () => {
                       : "bg-red-500 text-white"
                   }
                 >
-                  {produit.prixPromo ? produit.prixPromo : "Pas en Promo"}
+                  {produit.prixPromo ? produit.prixPromo + produit.prixPromo  : "Pas en Promo"} 
+                  {produit.prixPromo ? <Euro className="w-4" /> : ""}
                 </Badge>
               </TableCell>
               <TableCell>
