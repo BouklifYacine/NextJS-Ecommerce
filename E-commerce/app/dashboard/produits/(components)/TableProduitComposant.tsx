@@ -30,7 +30,7 @@ const TableProduitComposant = () => {
   const [recherche, setRecherche] = useState("");
   const [promotion, setPromotion] = useState(false);
   const [categorie, setCategorie]= useState("tous");
-  const [stock, setStock] = useState("tous")
+  const [stock, setStock] = useState("all")
 
   const GestionduStock = (quantitestock: number) => {
     if (quantitestock <= 15) return "bg-red-500 text-white";
@@ -44,7 +44,7 @@ const TableProduitComposant = () => {
     const FiltrePromotion = !promotion || produit.enPromotion === true;
     const FiltreCategorie = categorie === "tous" || produit.categorie.toLowerCase() === categorie.toLowerCase()
     const FiltreStock = 
-    stock === "tous" || 
+    stock === "all" || 
     (stock === "faible" && produit.quantiteStock <= 15) ||
     (stock === "moyen" && produit.quantiteStock >= 16 && produit.quantiteStock <= 70) ||
     (stock === "excellent" && produit.quantiteStock > 70);
@@ -76,24 +76,25 @@ const TableProduitComposant = () => {
             </label>
           </div>
 
-          <Select defaultValue="tous" onValueChange={(value) => setStock(value)}>
-  <SelectTrigger className="w-[180px]">
-    <SelectValue placeholder="Niveau de stock" />
-  </SelectTrigger>
-  <SelectContent>
-    <SelectGroup>
-      <SelectLabel>Stock</SelectLabel>
-      <SelectItem value="tous">Tous</SelectItem>
-      <SelectItem value="faible">Stock Faible (15 max)</SelectItem>
-      <SelectItem value="moyen">Stock Moyen (16 a 70) </SelectItem>
-      <SelectItem value="excellent">Stock excellent (71 et + )</SelectItem>
-    </SelectGroup>
-  </SelectContent>
-</Select>
+          <Select  onValueChange={(value) => setStock(value)}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Liste Stock" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Stocks : </SelectLabel>
+                 <SelectItem value="all">Tout type de stock </SelectItem>
+                <SelectItem value="faible" className="text-red-500">Stock faible (15 max) </SelectItem>
+                <SelectItem value="moyen" className="text-yellow-500">Stock Moyen (16 a 70)</SelectItem>
+                <SelectItem value="excellent" className="text-green-500">Stock excellent (+71)</SelectItem>
+             
+              </SelectGroup>
+            </SelectContent>
+          </Select>
 
           <Select  onValueChange={(value) => setCategorie(value)}>
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Quantité de stock" />
+              <SelectValue placeholder="Liste Catégories" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
@@ -106,6 +107,7 @@ const TableProduitComposant = () => {
               </SelectGroup>
             </SelectContent>
           </Select>
+
           <Input
             onChange={(e) => setRecherche(e.target.value)}
             value={recherche}
