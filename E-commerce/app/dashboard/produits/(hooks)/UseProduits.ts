@@ -2,6 +2,7 @@ import { reponseApiProduit } from "@/app/api/admin/produits/(interface-types)/in
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { supprimerProduit } from "../(actions)/ActionProduit";
 
 export function useProduits() {
     return useQuery<reponseApiProduit[]>({  
@@ -13,31 +14,32 @@ export function useProduits() {
     });
 }
 
-
-export function useSupprimerProduits(){
-    const QueryClient = useQueryClient()
-
+export function useSupprimerProduits() {
+    const queryClient = useQueryClient();
+  
     return useMutation({
-        mutationFn : async (produitId : string) => {
-            const response = await axios.delete(`/api/admin/produits/${produitId}`)
-            return response.data
-        },
-        onMutate: async (produitId) => {
-            await QueryClient.cancelQueries({ queryKey: ['produits'] });
-            
-            const AnciensProduits = QueryClient.getQueryData(['produits']);
-            QueryClient.setQueryData(['produits'], (ListeActuelle : reponseApiProduit[]) => 
-                ListeActuelle.filter(produit => produit.id !== produitId)
-            );
-            return { AnciensProduits };
-          },
-        
-        onSettled: () => {
-            QueryClient.invalidateQueries({ queryKey: ['produits'] });
-          },
-        onSuccess : () => {
-            toast.success("Produit supprimé avec succès")
-        }
-    })
+      mutationFn: async (produitId: string) => {
+        const result = await supprimerProduit(produitId);
+        return result;
+      },
+      onMutate: async (produitId) => {
+        await queryClient.cancelQueries({ queryKey: ['produits'] });
+        const anciensProduits = queryClient.getQueryData(['produits']);
 
+        queryClient.setQueryData(['produits'], (listeActuelle: reponseApiProduit[]) => 
+          listeActuelle.filter(produit => produit.id !== produitId)
+        );
+        
+        return { anciensProduits };
+      },
+      onError: (error: Error, ) => {
+        toast.error(error.message || "Erreur lors de la suppression du produit");
+      },
+      onSuccess: (data) => {
+        toast.success(data.message || "Produit supprimé avec succès");
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries({ queryKey: ['produits'] });
+      }
+    });
 }

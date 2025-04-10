@@ -158,7 +158,7 @@ const TableProduitComposant = () => {
 
 <div className="flex gap-4">
 <BoutonModifier/>
-<BoutonSupprimerProduit/>
+<BoutonSupprimerProduit produitId={produit.id} />
 </div>
 </TableCell>
             </TableRow>

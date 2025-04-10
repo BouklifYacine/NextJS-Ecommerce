@@ -1,6 +1,6 @@
-
+"use client"
 import React from 'react'
-import {
+import {     
     AlertDialog,
     AlertDialogAction,
     AlertDialogCancel,
@@ -10,30 +10,44 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
-  } from "@/components/ui/alert-dialog"
+} from "@/components/ui/alert-dialog"
 import { Button } from '@/components/ui/button'
+import { useSupprimerProduits } from '../(hooks)/UseProduits'
 
-const BoutonSupprimerProduit = () => {
-  return (
-    <AlertDialog>
-    <AlertDialogTrigger asChild>
-        <Button>Supprimer </Button>
-        </AlertDialogTrigger>
-    <AlertDialogContent>
-      <AlertDialogHeader>
-        <AlertDialogTitle>Etes vous sur de supprimer ce produit?</AlertDialogTitle>
-        <AlertDialogDescription>
-          Cette action sera irréversible. Cela va supprimer définitivement ce produit de votre site 
+interface ProduitId { produitId: string }
 
-        </AlertDialogDescription>
-      </AlertDialogHeader>
-      <AlertDialogFooter>
-        <AlertDialogCancel>Annuler</AlertDialogCancel>
-        <AlertDialogAction>Supprimer</AlertDialogAction>
-      </AlertDialogFooter>
-    </AlertDialogContent>
-  </AlertDialog>
-  )
+const BoutonSupprimerProduit = ({produitId }: ProduitId) => {
+    const { isPending, mutate } = useSupprimerProduits()
+
+    const SupprimerProduit = () => {
+        console.log("ID du produit dans le bouton :", produitId);
+        mutate(produitId)
+    }
+
+    return (
+        <AlertDialog>
+            <AlertDialogTrigger asChild>
+                <Button 
+                    disabled={isPending} 
+                    className={isPending ? "opacity-50" : "opacity-100"}
+                >
+                    {isPending ? "Suppression" : "Supprimer"}
+                </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+                <AlertDialogHeader>
+                    <AlertDialogTitle>Êtes-vous sûr de supprimer ce produit ?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                        Cette action sera irréversible. Cela va supprimer définitivement ce produit de votre site
+                    </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                    <AlertDialogCancel>Annuler</AlertDialogCancel>
+                    <AlertDialogAction onClick={SupprimerProduit}>Supprimer</AlertDialogAction>
+                </AlertDialogFooter>
+            </AlertDialogContent>
+        </AlertDialog>
+    )
 }
 
 export default BoutonSupprimerProduit
