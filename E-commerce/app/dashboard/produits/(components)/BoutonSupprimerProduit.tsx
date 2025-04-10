@@ -16,7 +16,9 @@ import { Button } from '@/components/ui/button'
 const BoutonSupprimerProduit = () => {
   return (
     <AlertDialog>
-    <AlertDialogTrigger><Button>Supprimer </Button></AlertDialogTrigger>
+    <AlertDialogTrigger asChild>
+        <Button>Supprimer </Button>
+        </AlertDialogTrigger>
     <AlertDialogContent>
       <AlertDialogHeader>
         <AlertDialogTitle>Etes vous sur de supprimer ce produit?</AlertDialogTitle>

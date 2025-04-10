@@ -16,18 +16,10 @@ import { useProduits } from "../(hooks)/UseProduits";
 import { Euro } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import BoutonModifier from "./BoutonModifier";
 import BoutonSupprimerProduit from "./BoutonSupprimerProduit";
 import FiltreStock from "./FiltreStock";
+import FiltreCategories from "./FiltreCategories";
 
 const TableProduitComposant = () => {
   const { data: produits, isLoading } = useProduits();
@@ -81,23 +73,8 @@ const TableProduitComposant = () => {
             </label>
           </div>
 
-          <FiltreStock stock={stock} setStock={setStock}></FiltreStock>
-
-          <Select  onValueChange={(value) => setCategorie(value)}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Liste Catégories" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Catégories</SelectLabel>
-                 <SelectItem value="tous">Toutes les catégories</SelectItem>
-                <SelectItem value="ELECTRONIQUE">Electronique </SelectItem>
-                <SelectItem value="INFORMATIQUE">Informatique</SelectItem>
-                <SelectItem value="GAMING">Gaming</SelectItem>
-                <SelectItem value="MOBILIER">Mobilier</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          <FiltreStock stock={stock} setStock={setStock}/>
+          <FiltreCategories categorie={categorie} setCategorie={setCategorie}/>
 
           <Input
             onChange={(e) => setRecherche(e.target.value)}
