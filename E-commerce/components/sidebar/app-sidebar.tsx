@@ -2,9 +2,10 @@
 
 import * as React from "react"
 import {
-  BookOpen,
+  Frame,
   GalleryVerticalEnd,
-  Settings2,
+  Map,
+  PieChart,
   ShoppingBag,
   ShoppingBasket,
   User 
@@ -13,6 +14,7 @@ import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } fr
 import { TeamSwitcher } from "./team-switcher"
 import { NavMain } from "./nav-main"
 import { NavUser } from "./nav-user"
+import { NavProjects } from "./nav-projects"
 
 
 const data = {
@@ -34,20 +36,48 @@ const data = {
       url: "/dashboard/utilisateurs",
       icon: User ,
       isActive: true,
+      items: [
+        {
+          title: "Utilisateurs",
+          url: "/dashboard/utilisateurs",
+        },
+      ],
       
     },
     {
       title: "Gestion des produits",
       url: "/dashboard/produits",
       icon: ShoppingBasket ,
+      items: [
+        {
+          title: "Produits",
+          url: "/dashboard/produits",
+        },
+      ],
     },
     {
       title: "Gestion des commandes",
       url: "/dashboard/commandes",
       icon: ShoppingBag ,
+      items: [
+        {
+          title: "Commandes",
+          url: "/dashboard/commandes",
+        },
+      ],
     },
+    
    
   ],
+  projects : [
+     
+      {
+        name: "Dashboard",
+        url: "/dashboard",
+        icon: Map,
+      },
+    ],
+  
  
 }
 
@@ -58,8 +88,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
       <SidebarContent>
+      <NavProjects projects={data.projects} />
         <NavMain items={data.navMain} />
-        
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />
