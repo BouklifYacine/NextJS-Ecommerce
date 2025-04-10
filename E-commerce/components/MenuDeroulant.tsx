@@ -1,15 +1,14 @@
 "use client";
 
 import {
-  ChartPie,
   CreditCard,
   DoorOpen,
   LogOut,
   Menu,
   Settings,
+  ShoppingBasket,
   Star,
   Table,
-  Table2,
   User,
 } from "lucide-react";
 import { useSession, signOut } from "next-auth/react";
@@ -67,6 +66,7 @@ export function MenuDeroulant() {
               </AvatarFallback>
             </Avatar>
             <DropdownMenuLabel className="px-0">Mon compte</DropdownMenuLabel>
+            
           </div>
           <DropdownMenuSeparator />
 
@@ -97,6 +97,10 @@ export function MenuDeroulant() {
               <DropdownMenuItem>
                 <User className="mr-2 h-4 w-4" />
                 <span>{session.user?.name || "Profil"}</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <ShoppingBasket className="mr-2 h-4 w-4" />
+                <span>Panier (2)</span>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Star className="mr-2 h-4 w-4" />

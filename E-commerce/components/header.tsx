@@ -183,6 +183,10 @@ const Header = () => {
                     )}
 
                     <DropdownMenuGroup>
+                    <DropdownMenuItem>
+                <ShoppingBasket className="mr-2 h-4 w-4" />
+                <span>Panier (2)</span>
+              </DropdownMenuItem>
                       <DropdownMenuItem>
                         <Settings className="mr-2 h-4 w-4 cursor-pointer" />
                         <Link
