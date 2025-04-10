@@ -1,4 +1,4 @@
-import { ApiResponse, reponseApiProduit } from "@/app/api/admin/produits/(interface-types)/interface";
+import { reponseApiProduit } from "@/app/api/admin/produits/(interface-types)/interface";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
