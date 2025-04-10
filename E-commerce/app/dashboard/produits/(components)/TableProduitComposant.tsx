@@ -16,10 +16,9 @@ import { useProduits } from "../(hooks)/UseProduits";
 const TableProduitComposant = () => {
   const { data : produits } = useProduits();
 
-
   const GestionduStock = (quantitestock: number) => {
     if (quantitestock <= 25) return "bg-red-500 text-white";
-    else if (quantitestock <= 26) return "bg-yellow-500 text-white";
+    else if (quantitestock >= 26 && quantitestock <= 70 ) return "bg-yellow-500 text-white";
     else return "bg-green-500 text-white";
   };
 
@@ -89,7 +88,7 @@ const TableProduitComposant = () => {
               </TableCell>
               <TableCell> {produit.images.length}</TableCell>
               <TableCell>
-                 {produit.createdAt.toString()}
+                {new Date(produit.createdAt).toLocaleDateString("fr-FR")}
               </TableCell>
             </TableRow>
           ))}
