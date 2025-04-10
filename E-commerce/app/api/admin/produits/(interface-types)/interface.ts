@@ -21,5 +21,9 @@ export interface reponseApiProduit {
   updatedAt: Date;
   enPromotion: boolean;
   images : Image[]
+}
 
+export interface ApiResponse {
+  data: reponseApiProduit[];
+  
 }
