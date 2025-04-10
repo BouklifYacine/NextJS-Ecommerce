@@ -8,6 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+
 import { Checkbox } from "@/components/ui/checkbox";
 import React, { useState } from "react";
 import { Badge } from "@/components/ui/badge";
@@ -24,6 +25,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import BoutonModifier from "./BoutonModifier";
+import BoutonSupprimerProduit from "./BoutonSupprimerProduit";
+import FiltreStock from "./FiltreStock";
 
 const TableProduitComposant = () => {
   const { data: produits, isLoading } = useProduits();
@@ -31,6 +35,7 @@ const TableProduitComposant = () => {
   const [promotion, setPromotion] = useState(false);
   const [categorie, setCategorie]= useState("tous");
   const [stock, setStock] = useState("all")
+  
 
   const GestionduStock = (quantitestock: number) => {
     if (quantitestock <= 15) return "bg-red-500 text-white";
@@ -76,21 +81,7 @@ const TableProduitComposant = () => {
             </label>
           </div>
 
-          <Select  onValueChange={(value) => setStock(value)}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Liste Stock" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Stocks : </SelectLabel>
-                 <SelectItem value="all">Tout type de stock </SelectItem>
-                <SelectItem value="faible" className="text-red-500">Stock faible (15 max) </SelectItem>
-                <SelectItem value="moyen" className="text-yellow-500">Stock Moyen (16 a 70)</SelectItem>
-                <SelectItem value="excellent" className="text-green-500">Stock excellent (+71)</SelectItem>
-             
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          <FiltreStock stock={stock} setStock={setStock}></FiltreStock>
 
           <Select  onValueChange={(value) => setCategorie(value)}>
             <SelectTrigger className="w-[180px]">
@@ -184,8 +175,15 @@ const TableProduitComposant = () => {
               <TableCell>{produit.categorie.toLowerCase()}</TableCell>
               <TableCell> {produit.images.length}</TableCell>
               <TableCell>
-                {new Date(produit.createdAt).toLocaleDateString("fr-FR")}
-              </TableCell>
+  {new Date(produit.createdAt).toLocaleDateString("fr-FR")}
+</TableCell>
+<TableCell>
+
+<div className="flex gap-4">
+<BoutonModifier/>
+<BoutonSupprimerProduit/>
+</div>
+</TableCell>
             </TableRow>
           ))}
         </TableBody>
