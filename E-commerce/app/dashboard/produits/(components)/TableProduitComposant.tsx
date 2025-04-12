@@ -20,6 +20,7 @@ import BoutonSupprimerProduit from "./BoutonSupprimerProduit";
 import FiltreStock from "./FiltreStock";
 import FiltreCategories from "./FiltreCategories";
 import { BoutonModifier } from "./BoutonModifier";
+import { BoutonAjouterProduit } from "./BoutonAjouterProduit";
 
 const TableProduitComposant = () => {
   const { data: produits, isLoading } = useProduits();
@@ -55,7 +56,7 @@ const TableProduitComposant = () => {
       <h1 className="text-3xl font-bold m-4 text-center">Liste des produits </h1>
       <div className="flex items-center justify-between m-5 ">
         <div className="flex">
-          <Button>Ajouter un produit </Button>
+          <BoutonAjouterProduit></BoutonAjouterProduit>
         </div>
 
         <div className="flex gap-4">

@@ -13,20 +13,20 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Pencil } from "lucide-react"
 
-export function BoutonModifier() {
+
+export function BoutonAjouterProduit() {
   return (
     <form action="">
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">Modifier produit <Pencil /></Button>
+        <Button variant="default">Ajouter Produit </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Modifier produit</DialogTitle>
+          <DialogTitle> Ajouter Produit</DialogTitle>
           <DialogDescription>
-          Modifier le produit avec les données de votre choix 
+          Ajouter un produit que les clients pourront acheter en respectant les modalités du formulaires
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
@@ -42,7 +42,7 @@ export function BoutonModifier() {
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="prix" className="text-right">
-              Prix *
+              Prix*
             </Label>
             <Input
               id="username"
@@ -73,7 +73,7 @@ export function BoutonModifier() {
          
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="prix" className="text-right">
-              Catégorie *
+              Catégorie*
             </Label>
             <Select >
             <SelectTrigger className="w-[180px]">
@@ -103,7 +103,7 @@ export function BoutonModifier() {
         
         </div>
         <DialogFooter>
-          <Button >Sauvegarder</Button>
+          <Button type="submit">Sauvegarder</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

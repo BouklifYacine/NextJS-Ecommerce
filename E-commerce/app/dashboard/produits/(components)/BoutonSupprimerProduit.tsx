@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Button } from '@/components/ui/button'
 import { useSupprimerProduits } from '../(hooks)/UseProduits'
+import { Trash2 } from 'lucide-react'
 
 interface ProduitId { produitId: string }
 
@@ -30,8 +31,10 @@ const BoutonSupprimerProduit = ({produitId }: ProduitId) => {
                 <Button 
                     disabled={isPending} 
                     className={isPending ? "opacity-50" : "opacity-100"}
+                    variant={"destructive"}
                 >
                     {isPending ? "Suppression" : "Supprimer"}
+                    <Trash2 />
                 </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
