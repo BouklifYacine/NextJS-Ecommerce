@@ -16,10 +16,10 @@ import { useProduits } from "../(hooks)/UseProduits";
 import { Euro } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import BoutonModifier from "./BoutonModifier";
 import BoutonSupprimerProduit from "./BoutonSupprimerProduit";
 import FiltreStock from "./FiltreStock";
 import FiltreCategories from "./FiltreCategories";
+import { BoutonModifier } from "./BoutonModifier";
 
 const TableProduitComposant = () => {
   const { data: produits, isLoading } = useProduits();
