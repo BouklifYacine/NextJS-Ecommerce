@@ -14,21 +14,23 @@ import React, { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { useProduits } from "../(hooks)/UseProduits";
 import { Euro } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import BoutonSupprimerProduit from "./BoutonSupprimerProduit";
 import FiltreStock from "./FiltreStock";
 import FiltreCategories from "./FiltreCategories";
 import { BoutonModifier } from "./BoutonModifier";
 import { BoutonAjouterProduit } from "./BoutonAjouterProduit";
+import BoutonTriPrix from "./BoutonTriPrix";
 
 const TableProduitComposant = () => {
   const { data: produits, isLoading } = useProduits();
   const [recherche, setRecherche] = useState("");
   const [promotion, setPromotion] = useState(false);
-  const [categorie, setCategorie]= useState("tous");
-  const [stock, setStock] = useState("all")
-  
+  const [categorie, setCategorie] = useState("tous");
+  const [stock, setStock] = useState("all");
+  const [triPrix, setTriPrix] = useState("default");
+
+  produits?.sort((produit) => produit.prix);
 
   const GestionduStock = (quantitestock: number) => {
     if (quantitestock <= 15) return "bg-red-500 text-white";
@@ -38,22 +40,39 @@ const TableProduitComposant = () => {
   };
 
   const tableauFiltre = produits?.filter((produit) => {
-    const InputRecherche = produit.nom.toLowerCase().includes(recherche.toLowerCase());
+    const InputRecherche = produit.nom
+      .toLowerCase()
+      .includes(recherche.toLowerCase());
     const FiltrePromotion = !promotion || produit.enPromotion === true;
-    const FiltreCategorie = categorie === "tous" || produit.categorie.toLowerCase() === categorie.toLowerCase()
-    const FiltreStock = 
-    stock === "all" || 
-    (stock === "faible" && produit.quantiteStock <= 15) ||
-    (stock === "moyen" && produit.quantiteStock >= 16 && produit.quantiteStock <= 70) ||
-    (stock === "excellent" && produit.quantiteStock > 70);
-    return InputRecherche && FiltrePromotion && FiltreCategorie && FiltreStock ;
+    const FiltreCategorie =
+      categorie === "tous" ||
+      produit.categorie.toLowerCase() === categorie.toLowerCase();
+    const FiltreStock =
+      stock === "all" ||
+      (stock === "faible" && produit.quantiteStock <= 15) ||
+      (stock === "moyen" &&
+        produit.quantiteStock >= 16 &&
+        produit.quantiteStock <= 70) ||
+      (stock === "excellent" && produit.quantiteStock > 70);
+    return InputRecherche && FiltrePromotion && FiltreCategorie && FiltreStock;
   });
+
+  const TableauTrierEtFilter = tableauFiltre ? [...tableauFiltre] : [];
+  if (triPrix === "croissant") {
+    TableauTrierEtFilter.sort((a, b) => a.prix - b.prix);
+  } else if (triPrix === "decroissant") {
+    TableauTrierEtFilter.sort((a, b) => b.prix - a.prix);
+  }
 
   if (isLoading) return <p> Ca charge </p>;
 
+  // Ajouter les boutons modifier et supprimer quand on clique sur les checkbox 0
+
   return (
     <div className="rounded-md  p-6 mt-6">
-      <h1 className="text-3xl font-bold m-4 text-center">Liste des produits </h1>
+      <h1 className="text-3xl font-bold m-4 text-center">
+        Liste des produits{" "}
+      </h1>
       <div className="flex items-center justify-between m-5 ">
         <div className="flex">
           <BoutonAjouterProduit></BoutonAjouterProduit>
@@ -73,9 +92,10 @@ const TableProduitComposant = () => {
               Promotion
             </label>
           </div>
-
-          <FiltreStock stock={stock} setStock={setStock}/>
-          <FiltreCategories categorie={categorie} setCategorie={setCategorie}/>
+        
+          <BoutonTriPrix triPrix={triPrix} setTriPrix={setTriPrix}/>
+          <FiltreStock stock={stock} setStock={setStock} />
+          <FiltreCategories categorie={categorie} setCategorie={setCategorie} />
 
           <Input
             onChange={(e) => setRecherche(e.target.value)}
@@ -108,7 +128,7 @@ const TableProduitComposant = () => {
         </TableHeader>
 
         <TableBody>
-          {tableauFiltre?.map((produit) => (
+          {TableauTrierEtFilter?.map((produit) => (
             <TableRow key={produit.id}>
               <TableCell>
                 <Checkbox />
@@ -153,15 +173,14 @@ const TableProduitComposant = () => {
               <TableCell>{produit.categorie.toLowerCase()}</TableCell>
               <TableCell> {produit.images.length}</TableCell>
               <TableCell>
-  {new Date(produit.createdAt).toLocaleDateString("fr-FR")}
-</TableCell>
-<TableCell>
-
-<div className="flex gap-4">
-<BoutonModifier/>
-<BoutonSupprimerProduit produitId={produit.id} />
-</div>
-</TableCell>
+                {new Date(produit.createdAt).toLocaleDateString("fr-FR")}
+              </TableCell>
+              <TableCell>
+                <div className="flex gap-4">
+                  <BoutonModifier />
+                  <BoutonSupprimerProduit produitId={produit.id} />
+                </div>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
