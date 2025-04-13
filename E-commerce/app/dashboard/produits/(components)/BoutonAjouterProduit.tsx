@@ -103,7 +103,7 @@ export function BoutonAjouterProduit() {
         
         </div>
         <DialogFooter>
-          <Button type="submit">Sauvegarder</Button>
+          <Button >Sauvegarder</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

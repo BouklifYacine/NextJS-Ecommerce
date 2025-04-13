@@ -14,8 +14,9 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Pencil } from "lucide-react"
+import { BoutonModifierProps } from "../(interface-types)/interfacetypes"
 
-export function BoutonModifier() {
+export function BoutonModifier({produit} : BoutonModifierProps) {
   return (
     <form action="">
     <Dialog>
@@ -36,7 +37,7 @@ export function BoutonModifier() {
             </Label>
             <Input
               id="name"
-              defaultValue="Pedro Duarte"
+              defaultValue={produit.nom}
               className="col-span-3"
             />
           </div>
@@ -46,7 +47,7 @@ export function BoutonModifier() {
             </Label>
             <Input
               id="username"
-              defaultValue="@peduarte"
+              defaultValue={produit.prix}
               className="col-span-3"
             />
           </div>
@@ -56,7 +57,7 @@ export function BoutonModifier() {
             </Label>
             <Input
               id="description"
-              defaultValue="@peduarte"
+              defaultValue={produit.description}
               className="col-span-3"
             />
           </div>
@@ -66,7 +67,7 @@ export function BoutonModifier() {
             </Label>
             <Input
               id="quantitestock"
-              defaultValue="@peduarte"
+              defaultValue={produit.quantiteStock}
               className="col-span-3"
             />
           </div>
@@ -96,7 +97,7 @@ export function BoutonModifier() {
             </Label>
             <Input
               id="promotion"
-              defaultValue="@peduarte"
+              defaultValue={produit.prixPromo ? produit.prixPromo : ""}
               className="col-span-3"
             />
           </div>

@@ -11,7 +11,6 @@ interface Props {
 const BoutonTriPrix = ({triPrix, setTriPrix} : Props) => {
   return (
     <>
-
           <Select value={triPrix}
            onValueChange={(value) => setTriPrix(value as enumTri)}>
             <SelectTrigger className="w-[180px]">

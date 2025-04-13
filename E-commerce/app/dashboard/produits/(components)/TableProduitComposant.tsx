@@ -30,8 +30,6 @@ const TableProduitComposant = () => {
   const [stock, setStock] = useState("all");
   const [triPrix, setTriPrix] = useState("default");
 
-  produits?.sort((produit) => produit.prix);
-
   const GestionduStock = (quantitestock: number) => {
     if (quantitestock <= 15) return "bg-red-500 text-white";
     else if (quantitestock >= 16 && quantitestock <= 70)
@@ -177,7 +175,7 @@ const TableProduitComposant = () => {
               </TableCell>
               <TableCell>
                 <div className="flex gap-4">
-                  <BoutonModifier />
+                  <BoutonModifier produit={produit} />
                   <BoutonSupprimerProduit produitId={produit.id} />
                 </div>
               </TableCell>
