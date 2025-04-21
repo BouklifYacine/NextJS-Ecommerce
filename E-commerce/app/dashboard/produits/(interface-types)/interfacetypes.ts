@@ -1,6 +1,7 @@
 import { Categorie } from "@prisma/client";
 
 export interface BoutonModifierProps {
+    produit: {
       id: string;
       nom: string;
       prix: number;
@@ -9,4 +10,5 @@ export interface BoutonModifierProps {
       categorie: Categorie;
       prixPromo?: number | null;
       enPromotion: boolean;
+    }
   }
