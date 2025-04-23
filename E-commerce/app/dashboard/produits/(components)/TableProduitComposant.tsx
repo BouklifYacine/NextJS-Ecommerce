@@ -118,7 +118,6 @@ const TableProduitComposant = () => {
             </TableHead>
             <TableHead className="font-bold text-black">En Promotion</TableHead>
             <TableHead className="font-bold text-black">Catégorie</TableHead>
-            <TableHead className="font-bold text-black"> Images</TableHead>
             <TableHead className="font-bold text-black">
               {" "}
               Date création
@@ -170,7 +169,7 @@ const TableProduitComposant = () => {
                 </Badge>
               </TableCell>
               <TableCell>{produit.categorie.toLowerCase()}</TableCell>
-              <TableCell> {produit.images.length}</TableCell>
+              
               <TableCell>
                 {new Date(produit.createdAt).toLocaleDateString("fr-FR")}
               </TableCell>
