@@ -18,9 +18,20 @@ const FormulaireModifierProduit = ({produit} : BoutonModifierProps) => {
     const { isPending, mutate } = useModifierProduit();
     const [imageData, setImageData] = useState<{url: string; publicId: string} | null>(null);
 
-    // Configuration du formulaire
-    const { handleSubmit, register, control, reset, setValue, formState: { errors } } = useForm<ProduitFormData>({
+    const RetirerPromotion = () => {
+        setValue('prixPromo', null); 
+    };
+    const { handleSubmit, register, control, setValue, formState: { errors } } = useForm<ProduitFormData>({
       resolver: zodResolver(SchemaAjouterProduits),
+      defaultValues: {
+        nom: produit.nom,
+        description: produit.description || "",
+        prix: produit.prix,
+        quantiteStock: produit.quantiteStock,
+        categorie: produit.categorie,
+        prixPromo: produit.prixPromo || null,
+       
+      }
     
     });
 
@@ -33,6 +44,14 @@ const FormulaireModifierProduit = ({produit} : BoutonModifierProps) => {
     };
 
     const onSubmit = (formData: ProduitFormData) => {
+
+        const prixPromo = 
+        formData.prixPromo === 0 || 
+        formData.prixPromo === undefined || 
+        formData.prixPromo === null 
+          ? null 
+          : formData.prixPromo;
+          
       const enPromotion = formData.prixPromo !== undefined && 
                           formData.prixPromo !== null && 
                           formData.prixPromo > 0 &&
@@ -40,6 +59,7 @@ const FormulaireModifierProduit = ({produit} : BoutonModifierProps) => {
 
       const apiData = {
         ...formData,
+        prixPromo,
         enPromotion,
         id: produit.id,
         createdAt: new Date(),
@@ -74,7 +94,7 @@ const FormulaireModifierProduit = ({produit} : BoutonModifierProps) => {
             placeholder="Nom du produit"
             {...register("nom")}
             className="mt-1"
-            defaultValue={produit.nom}
+        
           />
           {errors.nom && <p className="text-red-500 text-sm">{errors.nom.message}</p>}
         </div>
@@ -88,7 +108,7 @@ const FormulaireModifierProduit = ({produit} : BoutonModifierProps) => {
             placeholder="0.00"
             {...register('prix', { valueAsNumber: true })}
             className="mt-1"
-            defaultValue={produit.prix}
+        
           />
           {errors.prix && <p className="text-red-500 text-sm">{errors.prix.message}</p>}
         </div>
@@ -100,7 +120,7 @@ const FormulaireModifierProduit = ({produit} : BoutonModifierProps) => {
             placeholder="Description du produit"
             {...register('description')}
             className="mt-1"
-            defaultValue={produit.description}
+        
           />
           {errors.description && <p className="text-red-500 text-sm">{errors.description.message}</p>}
         </div>
@@ -113,7 +133,7 @@ const FormulaireModifierProduit = ({produit} : BoutonModifierProps) => {
             placeholder="0"
             {...register('quantiteStock', { valueAsNumber: true })}
             className="mt-1"
-            defaultValue={produit.quantiteStock}
+          
           />
           {errors.quantiteStock && <p className="text-red-500 text-sm">{errors.quantiteStock.message}</p>}
         </div>
@@ -124,7 +144,7 @@ const FormulaireModifierProduit = ({produit} : BoutonModifierProps) => {
             name="categorie"
             control={control}
             render={({ field }) => (
-              <Select onValueChange={field.onChange} value={field.value} defaultValue={produit.categorie}>
+              <Select onValueChange={field.onChange} value={field.value} >
                 <SelectTrigger className="w-full mt-1">
                   <SelectValue placeholder="Sélectionner une catégorie" />
                 </SelectTrigger>
@@ -144,18 +164,38 @@ const FormulaireModifierProduit = ({produit} : BoutonModifierProps) => {
         </div>
         
         <div>
-          <Label htmlFor="prixPromo">Prix Promotion (Optionnel)</Label>
-          <Input
-            id="prixPromo"
-            type="number"
-            step="0.01"
-            placeholder="0.00"
-            {...register('prixPromo', { valueAsNumber: true })}
-            className="mt-1"
-            defaultValue={produit.prixPromo || undefined}
-          />
-          {errors.prixPromo && <p className="text-red-500 text-sm">{errors.prixPromo.message}</p>}
-        </div>
+                <Label htmlFor="prixPromo">Prix Promotion (Optionnel)</Label>
+                <div className="flex items-center gap-2">
+                    <Input
+                        id="prixPromo"
+                        type="number"
+                        step="0.01"
+                        placeholder="0.00"
+                        {...register('prixPromo', { 
+                            valueAsNumber: true,
+                            setValueAs: v => {
+                                if (v === 0 || v === "" || v === undefined || isNaN(v)) {
+                                    return null;
+                                }
+                                return Number(v);
+                            }
+                        })}
+                        className="mt-1 flex-1"
+                    />
+                  
+                    {produit.prixPromo !== null && produit.prixPromo !== undefined && (
+                        <Button
+                            type="button"
+                            variant="destructive"
+                            onClick={RetirerPromotion}
+                            className="mt-1"
+                        >
+                            Supprimer
+                        </Button>
+                    )}
+                </div>
+                {errors.prixPromo && <p className="text-red-500 text-sm">{errors.prixPromo.message}</p>}
+            </div>
         
         <div>
           <Label>Image Produit</Label>

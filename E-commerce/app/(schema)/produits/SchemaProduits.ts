@@ -18,7 +18,7 @@ export const SchemaAjouterProduits = z.object({
     .number({ message: "Doit être un nombre" })
     .int()
     .nonnegative(),
-  categorie: z.enum(["ELECTRONIQUE", "INFORMATIQUE", "GAMING", "MOBILIER"]),
+  categorie: z.enum(["ELECTRONIQUE", "INFORMATIQUE", "GAMING", "MOBILIER"] , {message : "Une catégorie est requise"}),
   image: z.object({
     urlImage: z.string().url({ message: "URL d'image invalide" }),
     publicId: z.string().min(1, { message: "ID public requis" })
