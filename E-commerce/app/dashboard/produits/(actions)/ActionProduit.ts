@@ -3,8 +3,10 @@
 import { prisma } from "@/prisma";
 import { AccesAdmin } from "@/lib/SessionAdmin";
 import { revalidatePath } from "next/cache";
-import { reponseApiProduit } from "@/app/api/admin/produits/(interface-types)/interface";
+
 import { SchemaAjouterProduits } from "@/app/(schema)/produits/SchemaProduits";
+import { reponseApiProduit } from "@/app/api/admin/produits/(interface-types)/interface";
+
 
 export async function supprimerProduit(id: string) {
   const admin = await AccesAdmin();
@@ -51,7 +53,7 @@ export async function ajouterProduit(data: reponseApiProduit) {
       throw new Error(validation.error.errors[0].message);
     }
     const produitComplet: reponseApiProduit = await prisma.$transaction(async (tx) => {
-      const { images, ...produitData } = validation.data;
+      const { image, ...produitData } = validation.data;
       
       const ProduitAvecPromotion = {
         ...produitData,
@@ -64,14 +66,13 @@ export async function ajouterProduit(data: reponseApiProduit) {
         data: ProduitAvecPromotion
       });
 
-      if (images && images.length > 0) {
-        await tx.imageProduit.createMany({
-          data: images.map((image, index) => ({
+      if (image) {
+        await tx.imageProduit.create({
+          data: {
             produitId: nouveauProduit.id,
-            urlImage: image.urlImage,
-            principale: index === 0,
-            ordre: index
-          }))
+            urlImage: image.urlImage
+  
+          }
         });
       }
       
@@ -79,12 +80,17 @@ export async function ajouterProduit(data: reponseApiProduit) {
         where: { id: nouveauProduit.id },
         include: { images: true }
       });
-
+      
       if (!produitTrouve) {
         throw new Error("Produit non trouvé après création");
       }
       
-      return produitTrouve as reponseApiProduit;
+      const produitFormate = {
+        ...produitTrouve,
+        image: produitTrouve.images.length > 0 ? produitTrouve.images[0] : undefined
+      }; 
+      
+      return produitFormate as reponseApiProduit;
     });
 
     revalidatePath('/dashboard/produits');
