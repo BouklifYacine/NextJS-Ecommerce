@@ -15,6 +15,7 @@ import { useAjouterProduit } from "../../(hooks)/UseProduits"
 import { useRouter } from "next/navigation"
 
 
+
 export function FormulaireAjouterProduit() {
   const router = useRouter()
   const [imageData, setImageData] = useState<{url: string; publicId: string} | null>(null);
@@ -166,31 +167,33 @@ export function FormulaireAjouterProduit() {
         <div>
           <Label>Image Produit</Label>
           <div className="mt-2 space-y-2">
-            <CldUploadWidget
-              uploadPreset="dcjfs98o"
-              options={{
-                sources: ['local'],
-                multiple: false,
-                maxFiles: 1
-              }}
-              onSuccess={(result: any) => {
-                const url = result.info.secure_url
-                const publicId = result.info.public_id
-                
-                handleImageUpload({ url, publicId })
-              }}
-            >
-              {({ open }) => (
-                <Button 
-                  type="button"
-                  variant="outline" 
-                  onClick={() => open()}
-                  className="w-full"
-                >
-                  Uploader une image
-                </Button>
-              )}
-            </CldUploadWidget>
+          <CldUploadWidget
+  uploadPreset="dcjfs98o"
+  options={{
+    sources: ['local', 'google_drive', 'url'],
+    multiple: false,
+    maxFiles: 1
+  }}
+  onSuccess={(results) => {
+    if (results.info && typeof results.info !== 'string') {
+      const url = results.info.secure_url;
+      const publicId = results.info.public_id;
+      
+        handleImageUpload({ url, publicId });
+    }
+  }}
+>
+  {({ open }: { open: () => void }) => (
+    <Button
+      type="button"
+      variant="outline"
+      onClick={() => open()}
+      className="w-full"
+    >
+      Uploader une image
+    </Button>
+  )}
+</CldUploadWidget>
             {errors.image && <p className="text-red-500 text-sm">{errors.image.message}</p>}
             
             {imageData && (
