@@ -19,8 +19,16 @@ import BoutonSupprimerProduit from "./BoutonSupprimerProduit";
 import FiltreStock from "./FiltreStock";
 import FiltreCategories from "./FiltreCategories";
 import { BoutonModifier } from "./BoutonModifier";
-import { BoutonAjouterProduit } from "./BoutonAjouterProduit";
+
 import BoutonTriPrix from "./BoutonTriPrix";
+import BoutonCloudinary from "./BoutonCloudinary";
+import BoutonAjouterProduit from "./BoutonAjouterProduit";
+
+interface ImageData {
+  url: string
+  publicId: string
+}
+
 
 const TableProduitComposant = () => {
   const { data: produits, isLoading } = useProduits();
@@ -29,6 +37,13 @@ const TableProduitComposant = () => {
   const [categorie, setCategorie] = useState("tous");
   const [stock, setStock] = useState("all");
   const [triPrix, setTriPrix] = useState("default");
+
+   const [imageData, setImageData] = useState<ImageData | null>(null)
+    
+    const handleImageUpload = (data: ImageData) => {
+      setImageData(data)
+      console.log('Image reçue:', data)
+    }
 
   const GestionduStock = (quantitestock: number) => {
     if (quantitestock <= 15) return "bg-red-500 text-white";
@@ -74,6 +89,8 @@ const TableProduitComposant = () => {
       <div className="flex items-center justify-between m-5 ">
         <div className="flex">
           <BoutonAjouterProduit></BoutonAjouterProduit>
+          <BoutonCloudinary onUploadComplete={handleImageUpload} />
+
         </div>
 
         <div className="flex gap-4">

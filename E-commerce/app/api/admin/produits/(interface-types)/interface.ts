@@ -1,9 +1,9 @@
 import { Categorie } from "@prisma/client";
-interface Image{
+export interface Image{
     id: string;
     produitId: string;
     urlImage: string; 
-    principale: boolean;
+    principale?: boolean;
     createdAt: Date;
     updatedAt: Date;
 }

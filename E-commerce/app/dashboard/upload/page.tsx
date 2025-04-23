@@ -1,50 +1,42 @@
 "use client"
 import React, { useState } from 'react'
-import { CldImage, CldUploadWidget } from 'next-cloudinary'
+import { CldImage } from 'next-cloudinary'
+import BoutonCloudinary from '../produits/(components)/BoutonCloudinary'
 
-// Définir l'interface pour le résultat d'upload Cloudinary
-interface CloudinaryResult {
-  info: {
-    secure_url: string;
-    public_id: string;
-  };
+
+interface ImageData {
+  url: string
+  publicId: string
 }
 
 const Upload = () => {
-  const [publicId, setPublicId] = useState<string>('')
+  const [imageData, setImageData] = useState<ImageData | null>(null)
   
+  const handleImageUpload = (data: ImageData) => {
+    setImageData(data)
+    console.log('Image reçue:', data)
+  }
+
   return (
-    <>
-    {publicId && <CldImage src={publicId} width={150} height={200} alt='Image'></CldImage>}
-      <CldUploadWidget
-        onSuccess={(result: CloudinaryResult, ) => {
-          // Avec les types correctement définis, TypeScript comprend la structure
-          const url = result.info.secure_url;
-          const publicId = result.info.public_id;
-          
-          // Mettre à jour l'état avec l'ID public
-          setPublicId(publicId);
-          
-          // Afficher ces valeurs spécifiques
-          console.log("URL:", url);
-          console.log("Public ID:", publicId);
-          
-        }}
-        uploadPreset="dcjfs98o"
-      >
-        {({ open }: { open: () => void }) => {
-          return (
-            <button onClick={() => open()}>
-              Upload an Image
-            </button>
-          );
-        }}
-      </CldUploadWidget>
+    <div className="space-y-4 p-4">
+      <BoutonCloudinary onUploadComplete={handleImageUpload} />
       
-      {publicId && (
-        <p className="mt-2">Image uploadée avec l'ID: {publicId}</p>
+      {imageData && (
+        <div className="mt-4">
+          <CldImage 
+            src={imageData.publicId} 
+            width={300} 
+            height={200} 
+            alt="Image uploadée"
+            className="rounded-lg border"
+          />
+          <div className="mt-2 space-y-1">
+            <p className="text-sm">Public ID: {imageData.publicId}</p>
+            <p className="text-xs text-gray-500 break-all">URL: {imageData.url}</p>
+          </div>
+        </div>
       )}
-    </>
+    </div>
   )
 }
 

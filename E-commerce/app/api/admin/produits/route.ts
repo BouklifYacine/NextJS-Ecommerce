@@ -39,9 +39,9 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  const Admin = await AccesAdmin();
+  // const Admin = await AccesAdmin();
   
-  if (Admin !== true) { return Admin; }
+  // if (Admin !== true) { return Admin; }
 
   const data = await request.json();
   const validation = SchemaAjouterProduits.safeParse(data);
