@@ -40,7 +40,14 @@ export function useSupprimerProduits() {
       toast.error(error.message || "Erreur lors de la suppression du produit");
     },
     onSuccess: (data) => {
-      toast.success(data.message || "Produit supprimé avec succès");
+      toast.dismiss();
+      if (data.success) {
+        toast.success(data.message || "Produit modifié avec succès");
+      } else {
+        // En cas d'échec côté serveur, on revient à l'état précédent
+        toast.error(data.message || "Échec de la modification du produit");
+        queryClient.invalidateQueries({ queryKey: ["produits"] });
+      }
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["produits"] });
