@@ -146,7 +146,7 @@ const TableProduitComposant = () => {
                   }
                 >
                   {produit.prixPromo
-                    ? produit.prixPromo + produit.prixPromo
+                    ? produit.prixPromo 
                     : "Pas en Promo"}
                   {produit.prixPromo ? <Euro className="w-4" /> : ""}
                 </Badge>

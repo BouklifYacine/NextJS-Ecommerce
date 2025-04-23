@@ -64,20 +64,46 @@ export function useAjouterProduit() {
       return result;
     },
 
-    onMutate: () => {
-      toast.loading("Création du produit en cours ... ");
+    onMutate: async (nouveauproduit) => {
+
+      await queryClient.cancelQueries({ queryKey: ["produits"] });
+      
+      // Sauvegarder l'état actuel
+      const anciensProduits = queryClient.getQueryData<reponseApiProduit[]>(["produits"]);
+
+      queryClient.setQueryData<reponseApiProduit[]>(["produits"], (produits) => {
+        if (!produits) return [nouveauproduit];
+        return [...produits, nouveauproduit];
+      });
+      
+      toast.loading("Ajout du produit en cours...");
+      
+      return { anciensProduits };
+    ;
     },
 
-    onSuccess: (data) => {
+    onSuccess: (resultat) => {
       toast.dismiss();
-      if(data.success){
-        toast.success(data.message)
-        queryClient.invalidateQueries({queryKey: ["produits"]})
-      }
-      else {
-        toast.error(data.message || "Echec de l'ajout du produit")
+      
+      if (resultat.success) {
+        toast.success(resultat.message || "Produit ajouté avec succès");
+        // Simplement invalider la requête pour rafraîchir les données
+        queryClient.invalidateQueries({ queryKey: ["produits"] });
+      } else {
+        toast.error(resultat.message || "Échec de l'ajout du produit");
       }
     },
+    
+    onError: (error, variables, context) => {
+      toast.dismiss();
+      toast.error(error instanceof Error ? error.message : "Erreur lors de l'ajout du produit");
+      
+      // Restaurer l'état précédent
+      if (context?.anciensProduits) {
+        queryClient.setQueryData(["produits"], context.anciensProduits);
+      }
+    },
+    
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["produits"] });
     },
