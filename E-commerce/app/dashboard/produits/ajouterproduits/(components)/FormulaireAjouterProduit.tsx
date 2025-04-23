@@ -1,6 +1,6 @@
 "use client"
 
-import { reponseApiProduit } from "@/app/api/admin/produits/(interface-types)/interface"
+import { ProduitFormData, reponseApiProduit } from "@/app/api/admin/produits/(interface-types)/interface"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -12,6 +12,7 @@ import { SchemaAjouterProduits } from "@/app/(schema)/produits/SchemaProduits"
 import { useState } from "react"
 import { CldUploadWidget, CldImage } from 'next-cloudinary'
 import { useAjouterProduit } from "../../(hooks)/UseProduits"
+import { useRouter } from "next/navigation"
 
 // Définition de l'interface pour les données d'image
 interface ImageData {
@@ -20,9 +21,10 @@ interface ImageData {
 }
 
 export function FormulaireAjouterProduit() {
-  const [imageData, setImageData] = useState<ImageData | null>(null)
+  const router = useRouter()
+  const [imageData, setImageData] = useState<{url: string; publicId: string} | null>(null);
   
-  const { handleSubmit, register, control, reset, setValue, formState: { errors } } = useForm<reponseApiProduit>({
+  const { handleSubmit, register, control, reset, setValue, formState: { errors } } = useForm<ProduitFormData>({
     resolver: zodResolver(SchemaAjouterProduits),
     defaultValues: {
       nom: "",
@@ -30,28 +32,55 @@ export function FormulaireAjouterProduit() {
       description: "",
       quantiteStock: 0,
       categorie: "ELECTRONIQUE",
-      prixPromo: 0,
+      prixPromo: null,
+      image: {
+        urlImage: "",
+        publicId: ""
+      }
     }
-  })
+  });
   
   const { isPending, mutate } = useAjouterProduit()
 
   const handleImageUpload = (result: { url: string; publicId: string }) => {
-    setImageData(result)
-    setValue('imageUrl', result.url)
-    setValue('imagePublicId', result.publicId)
-    console.log('Image reçue:', result)
-  }
+    setImageData(result);
+    setValue('image', { 
+      urlImage: result.url, 
+      publicId: result.publicId 
+    });
+  };
 
-  const onSubmit = (data: reponseApiProduit) => {
-    console.log("Données du formulaire:", data)
-    mutate(data, {
-      onSuccess: () => {
-        reset()
-        setImageData(null)
+  const onSubmit = (formData: ProduitFormData) => {
+    const enPromotion = formData.prixPromo !== undefined && 
+    formData.prixPromo !== null && 
+    formData.prixPromo > 0;
+
+    const apiData = {
+      ...formData,
+    enPromotion,
+      // Ces champs seront normalement ajoutés par le backend
+      id: "", // ou générez un UUID temporaire si nécessaire
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      image: {
+        ...formData.image,
+        id: "",
+        produitId: "",
+        principale: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
       }
-    })
-  }
+    } as reponseApiProduit;
+  
+    mutate(apiData, {
+      onSuccess: () => {
+        reset();
+        setImageData(null);
+        router.push('/dashboard/produits')
+        router.refresh()
+      }
+    });
+  };
 
   return (
     <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">

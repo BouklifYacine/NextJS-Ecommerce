@@ -1,9 +1,5 @@
 import { z } from "zod";
 
-const SchemaImage = z.object({
-  urlImage: z.string().url({ message: "URL d'image invalide" }),
-});
-
 export const SchemaAjouterProduits = z.object({
   nom: z
     .string({ message: "Vous devez mettre un nom" })
@@ -22,15 +18,11 @@ export const SchemaAjouterProduits = z.object({
     .number({ message: "Doit être un nombre" })
     .int()
     .nonnegative(),
-
   categorie: z.enum(["ELECTRONIQUE", "INFORMATIQUE", "GAMING", "MOBILIER"]),
-
-  image: SchemaImage
-  .or(
-    z.undefined().transform(() => {
-      throw new Error("Vous devez ajouter une image pour ce produit");
-    })
-  )
-  
-
+  image: z.object({
+    urlImage: z.string().url({ message: "URL d'image invalide" }),
+    publicId: z.string().min(1, { message: "ID public requis" })
+  }).refine(data => data.urlImage, {
+    message: "Vous devez ajouter une image pour ce produit",
+  })
 });
