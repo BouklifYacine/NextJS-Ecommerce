@@ -14,11 +14,6 @@ import { CldUploadWidget, CldImage } from 'next-cloudinary'
 import { useAjouterProduit } from "../../(hooks)/UseProduits"
 import { useRouter } from "next/navigation"
 
-// Définition de l'interface pour les données d'image
-interface ImageData {
-  url: string
-  publicId: string
-}
 
 export function FormulaireAjouterProduit() {
   const router = useRouter()
@@ -52,14 +47,14 @@ export function FormulaireAjouterProduit() {
 
   const onSubmit = (formData: ProduitFormData) => {
     const enPromotion = formData.prixPromo !== undefined && 
-    formData.prixPromo !== null && 
-    formData.prixPromo > 0;
+                        formData.prixPromo !== null && 
+                        formData.prixPromo > 0 &&
+                        formData.prixPromo < formData.prix;
 
     const apiData = {
       ...formData,
-    enPromotion,
-      // Ces champs seront normalement ajoutés par le backend
-      id: "", // ou générez un UUID temporaire si nécessaire
+      enPromotion,
+      id: "", 
       createdAt: new Date(),
       updatedAt: new Date(),
       image: {
@@ -77,7 +72,6 @@ export function FormulaireAjouterProduit() {
         reset();
         setImageData(null);
         router.push('/dashboard/produits')
-        router.refresh()
       }
     });
   };
@@ -159,7 +153,7 @@ export function FormulaireAjouterProduit() {
         </div>
         
         <div>
-          <Label htmlFor="prixPromo">Prix Promotion</Label>
+          <Label htmlFor="prixPromo">Prix Promotion (Optionnel)</Label>
           <Input
             id="prixPromo"
             type="number"
@@ -199,6 +193,7 @@ export function FormulaireAjouterProduit() {
                 </Button>
               )}
             </CldUploadWidget>
+            {errors.image && <p className="text-red-500 text-sm">{errors.image.message}</p>}
             
             {imageData && (
               <div className="mt-2 flex flex-col items-center">
@@ -222,7 +217,7 @@ export function FormulaireAjouterProduit() {
           className="w-full mt-4" 
           disabled={isPending}
         >
-          {isPending ? "Sauvegarde en cours..." : "Sauvegarder"}
+          {isPending ? "Ajout du produit..." : "Ajouter Produit"}
         </Button>
       </form>
     </div>
