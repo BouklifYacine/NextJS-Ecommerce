@@ -8,6 +8,19 @@ export interface Image{
     updatedAt: Date;
 }
 
+export interface ProduitFormData {
+  nom: string;
+  description: string;
+  prix: number;
+  prixPromo?: number | null;
+  quantiteStock: number;
+  categorie: Categorie;
+  image: {
+    urlImage: string;
+    publicId: string;
+  };
+}
+
 export interface reponseApiProduit {
   nom: string;
   description: string;

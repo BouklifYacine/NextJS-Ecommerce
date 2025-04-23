@@ -23,9 +23,7 @@ export function FormulaireAjouterProduit() {
     resolver: zodResolver(SchemaAjouterProduits),
     defaultValues: {
       nom: "",
-      prix: 0,
       description: "",
-      quantiteStock: 0,
       categorie: "ELECTRONIQUE",
       prixPromo: null,
       image: {
