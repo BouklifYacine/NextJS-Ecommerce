@@ -1,5 +1,5 @@
 import React from "react";
-import LogoLiverpool from "@/app/public/Logo_FC_Liverpool.svg.png";
+import Vivo from "@/app/public/vivo-2-logo-svgrepo-com.svg"
 import LogoRealMadrid from "@/app/public/Logo_Real_Madrid.svg.png";
 import LogoBarcelone from "@/app/public/Logo_FC_Barcelona.svg.webp";
 import LogoManCity from "@/app/public/Logo_Manchester_City_2016.svg";
@@ -15,7 +15,7 @@ const FooterMarque = () => {
         Ces marques nous font confiance
       </h2>
       <div className="flex flex-wrap justify-center gap-4 md:gap-10 mt-8 pb-8 mx-auto px-4">
-        <Image src={LogoLiverpool} alt="Logo Liverpool" width={45} height={45} className="w-[45px] md:w-[60px]" />
+        <Image src={Vivo} alt="Logo Liverpool" width={45} height={45} className="w-[45px] md:w-[60px]" />
         <Image src={LogoManCity} alt="Logo Manchester City" width={45} height={45} className="w-[45px] md:w-[60px]" />
         <Image src={LogoRealMadrid} alt="Logo Real Madrid" width={45} height={45} className="w-[45px] md:w-[60px]" />
         <Image src={LogoBarcelone} alt="Logo Barcelone" width={45} height={45} className="w-[45px] md:w-[60px]" />
