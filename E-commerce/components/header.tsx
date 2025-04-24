@@ -25,6 +25,7 @@ import {
 import { AdminAction } from "@/app/(actions)/AdminAction";
 import LogoPanier from "./panier/LogoPanier";
 import FavoriCoeur from "./FavoriCoeur/FavoriCoeur";
+import { Input } from "./ui/input";
 
 const Header = () => {
   const { data: session } = useSession();
@@ -66,6 +67,7 @@ const Header = () => {
 
             {/* Mettre l'input de recherche ici */}     
           
+          <Input className="w-72 placeholder:text-white placeholder:opacity-80" placeholder="Chercher un article" ></Input>
 
             {!session ? (
               <div className="flex items-center gap-6">
