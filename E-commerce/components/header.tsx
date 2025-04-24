@@ -12,6 +12,7 @@ import { BoutonConnexion } from "./BoutonConnexion";
 import { MenuDeroulant } from "@/components/MenuDeroulant";
 import { useQuery } from "@tanstack/react-query";
 import { UtilisateurAbonner } from "@/app/(actions)/UserAbonnementAction";
+import { FaHeart } from "react-icons/fa";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,6 +24,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { AdminAction } from "@/app/(actions)/AdminAction";
 import LogoPanier from "./panier/LogoPanier";
+import FavoriCoeur from "./FavoriCoeur/FavoriCoeur";
 
 const Header = () => {
   const { data: session } = useSession();
@@ -42,7 +44,7 @@ const Header = () => {
   const utilisateurAdmin = data?.admin.Admin;
 
   return (
-    <header className="sticky top-0 z-50 pt-4 px-4 bg-black">
+    <header className="sticky top-0 z-50 pt-4 px-4 bg-sky-500">
       <div className="mx-auto max-w-7xl px-4 md:px-6 py-3 md:py-4">
         <div className="flex items-center justify-between">
           <Link href="/">
@@ -60,35 +62,10 @@ const Header = () => {
             <MenuDeroulant />
           </div>
 
-          <nav className="hidden md:flex items-center gap-8 text-lg tracking-tight">
-            <Link
-              href="/"
-              className="text-white hover:text-purple-600 opacity-80 transition-colors"
-            >
-             Accueil
-            </Link>
+          <nav className="hidden md:flex items-center gap-8 text-lg tracking-tight">   
+
+            {/* Mettre l'input de recherche ici */}     
           
-            <Link
-              href="/"
-              className="text-white hover:text-purple-600 opacity-80 transition-colors"
-            >
-              Favoris
-            </Link>
-
-            <Link
-             href={`/parametres/${session?.user?.id}`}
-              className="text-white hover:text-purple-600 opacity-80 transition-colors"
-            >
-              Paramètres
-            </Link>
-
-            {utilisateurAdmin && <Link
-              href="/dashboard"
-              className="text-white hover:text-purple-600 opacity-80 transition-colors"
-            >
-              Dashboard
-            </Link>}
-            
 
             {!session ? (
               <div className="flex items-center gap-6">
@@ -201,6 +178,7 @@ const Header = () => {
                 </DropdownMenu>
                 
             <LogoPanier/>
+            <FavoriCoeur></FavoriCoeur>
              
               </div>
             )}
