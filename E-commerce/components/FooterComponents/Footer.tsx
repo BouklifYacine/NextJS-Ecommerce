@@ -1,5 +1,4 @@
 import React from "react";
-import FooterMarque from "./FooterMarque";
 import FooterReseauxsociaux from "./FooterReseauxsociaux";
 
 const Footer = () => {
@@ -10,6 +9,7 @@ const Footer = () => {
           <div className="flex justify-between">
             <div className=" flex  flex-col items-center">
               {" "}
+              <h2> </h2>
               <p>Yacine </p> 
               <p>Salah</p>{" "}
             </div>
@@ -22,7 +22,7 @@ const Footer = () => {
                 <p>Norhane</p>
             </div>
           </div>
-          <FooterMarque></FooterMarque>
+          
           <FooterReseauxsociaux></FooterReseauxsociaux>
         </div>
       </div>

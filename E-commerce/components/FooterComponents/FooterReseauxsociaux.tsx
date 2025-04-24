@@ -13,7 +13,7 @@ import Image from "next/image";
 const FooterReseauxsociaux = () => {
   return (
     <>
-        <h2 className='text-center mt-10 text-lg md:text-2xl font-bold tracking-tighter'> Nos réseaux sociaux </h2>
+
     <div className="flex flex-wrap justify-center gap-4 md:gap-6 mt-4 pb-8 mx-auto px-4">
 
         <Image src={Snapchat} alt="Logo Manchester City" width={40}  className="w-[30px] md:w-[40px]" />
