@@ -1,10 +1,9 @@
-import Header from '@/components/header'
-import React from 'react'
 
+import React from 'react'
 const LandingPage = () => {
   return (
     <>
-    
+<p>Coucou</p>
     </>
   )
 }
