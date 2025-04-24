@@ -1,5 +1,6 @@
 import React from "react";
 import FooterMarque from "./FooterMarque";
+import FooterReseauxsociaux from "./FooterReseauxsociaux";
 
 const Footer = () => {
   return (
@@ -22,6 +23,7 @@ const Footer = () => {
             </div>
           </div>
           <FooterMarque></FooterMarque>
+          <FooterReseauxsociaux></FooterReseauxsociaux>
         </div>
       </div>
     </>
