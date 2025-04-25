@@ -179,8 +179,9 @@ const Header = () => {
                   </DropdownMenuContent>
                 </DropdownMenu>
                 
+                <FavoriCoeur></FavoriCoeur>
             <LogoPanier/>
-            <FavoriCoeur></FavoriCoeur>
+           
              
               </div>
             )}
