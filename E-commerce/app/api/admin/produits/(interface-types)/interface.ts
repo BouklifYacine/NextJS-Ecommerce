@@ -32,7 +32,7 @@ export interface reponseApiProduit {
   createdAt: Date;
   updatedAt: Date;
   enPromotion: boolean;
-  images : Image
+  images : Image[]
 }
 
 export interface ApiResponse {

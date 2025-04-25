@@ -32,8 +32,8 @@ const BlocUnique = ({ titre, prix, note, NoteAvis, description }: PropsBlocUniqu
             src={produit.images[0].urlImage || Visa} 
             alt={produit.nom || titre} 
             className="w-full h-56 md:h-96 object-cover"
-            width={400}
-            height={400}
+            width={500}
+            height={500}
           />
           <button 
             className="absolute top-3 right-3 bg-white/90 p-2 rounded-full shadow-md hover:bg-gray-100 transition-colors border border-gray-400"

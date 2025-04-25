@@ -7,7 +7,7 @@ const ProductCard = ({titre,prix,note,NoteAvis,description}: PropsBlocUnique) =>
   );
 };
 
-const BlocProduitTopVente = () => {
+const BlocProduitSite = () => {
   {/* Ici on va fetch la réelle data plus tard ca sera mieux  */ }
   const produits = [
     {
@@ -55,4 +55,4 @@ const BlocProduitTopVente = () => {
   );
 };
 
-export default BlocProduitTopVente;
+export default BlocProduitSite;
