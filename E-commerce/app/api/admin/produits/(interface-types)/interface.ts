@@ -15,7 +15,7 @@ export interface ProduitFormData {
   prixPromo?: number | null;
   quantiteStock: number;
   categorie: Categorie;
-  image: {
+  images: {
     urlImage: string;
     publicId: string;
   };
@@ -32,7 +32,7 @@ export interface reponseApiProduit {
   createdAt: Date;
   updatedAt: Date;
   enPromotion: boolean;
-  image : Image
+  images : Image
 }
 
 export interface ApiResponse {
