@@ -5,7 +5,7 @@ import React from 'react';
 
 const LandingPage = () => {
   return (
-    <section className="bg-gray-50 py-12"> {/* Fond plus doux */}
+    <section className="bg-gray-50 py-12"> 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <TitreTopVente />
         <BlocProduitTopVente />

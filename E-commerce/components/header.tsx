@@ -12,7 +12,6 @@ import { BoutonConnexion } from "./BoutonConnexion";
 import { MenuDeroulant } from "@/components/MenuDeroulant";
 import { useQuery } from "@tanstack/react-query";
 import { UtilisateurAbonner } from "@/app/(actions)/UserAbonnementAction";
-import { FaHeart } from "react-icons/fa";
 import {
   DropdownMenu,
   DropdownMenuContent,

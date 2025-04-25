@@ -1,10 +1,9 @@
 import React from 'react'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '../ui/select'
 
-const FiltresPrix = () => {
+const FiltreCategorie = () => {
   return (
-    <>
- <Select>
+    <Select>
       <SelectTrigger className="w-full sm:w-[180px] h-12 bg-gray-300 rounded-full select-trigger">
         <SelectValue placeholder="Prix" className="text-red-500 text-lg font-medium" />
       </SelectTrigger>
@@ -17,9 +16,7 @@ const FiltresPrix = () => {
         </SelectGroup>
       </SelectContent>
     </Select>
-  
-    </>
   )
 }
 
-export default FiltresPrix
+export default FiltreCategorie
