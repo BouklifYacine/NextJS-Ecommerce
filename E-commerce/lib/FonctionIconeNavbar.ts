@@ -7,3 +7,10 @@ export const TailleBadge = (num: number) => {
  export const FormatCompteur = (num : number) => {
     return num > 99 ? "99+" : num;
   };
+
+  export const CouleurIcone = (num : number) => {
+    if (num === 0 ) return "text-black"
+    return "text-red-500"
+  }
+
+  
