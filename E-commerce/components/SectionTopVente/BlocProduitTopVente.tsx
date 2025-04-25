@@ -36,11 +36,13 @@ const BlocProduitTopVente = () => {
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {produits.map((produits, index) => (
-        <ProductCard key={index} {...produits} />
-      ))}
-    </div>
+    <div className="flex flex-wrap justify-center gap-8">
+    {produits.map((produit, index) => (
+      <div key={index} className="w-full md:w-[45%] lg:w-[30%]">
+        <ProductCard {...produit} />
+      </div>
+    ))}
+  </div>
   );
 };
 

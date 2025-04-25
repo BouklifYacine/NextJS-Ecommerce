@@ -4,9 +4,6 @@ import React from 'react';
 import { useProduits } from '../(hooks)/UseProduits';
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 import FormulaireModifierProduit from '../(components)/FormulaireModifierProduit';
 
 interface Props {
