@@ -9,7 +9,9 @@ const LandingPage = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <TitreTopVente />
         <BlocProduitTopVente />
+        <h1 className='text-2xl md:text-7xl text-center pt-40 pb-16 font-bold tracking-tighter'>Tout nos produits </h1>
         <Filtres></Filtres>
+        <BlocProduitTopVente />
       </div>
     </section>
   );

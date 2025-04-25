@@ -19,6 +19,38 @@ const BlocProduitTopVente = () => {
         "Description détaillée du produit avec ses caractéristiques principales.",
     },
     {
+      titre: "Produit Premium",
+      prix: 89.99,
+      note: 4.5,
+      NoteAvis: 24,
+      description:
+        "Description détaillée du produit avec ses caractéristiques principales.",
+    },
+    {
+      titre: "Produit Premium",
+      prix: 89.99,
+      note: 4.5,
+      NoteAvis: 24,
+      description:
+        "Description détaillée du produit avec ses caractéristiques principales.",
+    },
+    {
+      titre: "Produit Premium",
+      prix: 89.99,
+      note: 4.5,
+      NoteAvis: 24,
+      description:
+        "Description détaillée du produit avec ses caractéristiques principales.",
+    },
+    {
+      titre: "Produit Premium",
+      prix: 89.99,
+      note: 4.5,
+      NoteAvis: 24,
+      description:
+        "Description détaillée du produit avec ses caractéristiques principales.",
+    },
+    {
       titre: "Produit Standard",
       prix: 59.99,
       note: 4,

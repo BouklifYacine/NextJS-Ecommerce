@@ -5,6 +5,7 @@ import { FiShoppingCart } from "react-icons/fi";
 import { FaHeart } from "react-icons/fa";
 import Image from "next/image";
 import Visa from "@/app/public/visa-logo-svgrepo-com.svg"
+import { Badge } from "../ui/badge";
 
 export interface PropsBlocUnique {
     titre : string,
@@ -27,16 +28,23 @@ const BlocUnique = ({ titre,prix, note, NoteAvis,description} : PropsBlocUnique)
         >
           <FaHeart className="text-red-500 text-xl hover:text-red-600" />
         </button>
+
+        <Badge className="absolute top-3 left-3 bsg-white/90 p-2 rounded-xl text-sm shadow-md bg-white text-black  border border-gray-400">Gaming</Badge>
+
+      
       </div>
 
       {/* Détails produit */}
       <div className="p-6 flex-grow flex flex-col">
-        <div className="flex justify-between items-start mb-2">
+        <div className="flex justify-between items-start">
           <h3 className="text-lg font-semibold text-gray-900">{titre}</h3>
           <p className="text-lg font-bold text-blue-600">${prix}</p>
         </div>
+      
 
-        <div className="mb-4 flex items-center">
+<div className="flex justify-between items-start">
+
+<div className=" flex items-center">
           <Rating
             value={note}
             precision={0.5}
@@ -45,9 +53,12 @@ const BlocUnique = ({ titre,prix, note, NoteAvis,description} : PropsBlocUnique)
             readOnly
            
           />
-          <span className="text-sm text-black ml-2">({NoteAvis})</span>
+          <span className="text-sm text-black ml-1">({NoteAvis})</span>
+          
         </div>
-
+        <p className="text-green-500">En stock </p>
+</div>
+        
         <p className="text-gray-600 mb-6 flex-grow">{description}</p>
 
         <Button className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg flex items-center justify-center gap-2">

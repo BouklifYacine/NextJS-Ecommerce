@@ -7,7 +7,7 @@ import FiltreRecherche from './FiltreRecherche'
 
 const Filtres = () => {
   return (
-    <div className="px-4 py-4 sm:px-6">
+    <div className="px-4 pb-10 sm:px-6">
       <div className="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4 md:justify-end md:items-center">
         <FiltrePromotion />
         <FiltresPrix />
