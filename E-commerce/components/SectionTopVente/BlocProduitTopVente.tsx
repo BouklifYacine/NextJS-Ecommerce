@@ -1,53 +1,46 @@
 import React from "react";
-import Rating from "@mui/material/Rating";
-import { Button } from "../ui/button";
+import BlocUnique, { PropsBlocUnique } from "./BlocUnique";
 
+const ProductCard = ({titre,prix,note,NoteAvis,description}: PropsBlocUnique) => {
+  return (
+    <BlocUnique titre={titre} prix={prix} note={note} NoteAvis={NoteAvis} description={description}/>
+  );
+};
 
 const BlocProduitTopVente = () => {
+  {/* Ici on va fetch la réelle data plus tard ca sera mieux  */ }
+  const produits = [
+    {
+      titre: "Produit Premium",
+      prix: 89.99,
+      note: 4.5,
+      NoteAvis: 24,
+      description:
+        "Description détaillée du produit avec ses caractéristiques principales.",
+    },
+    {
+      titre: "Produit Standard",
+      prix: 59.99,
+      note: 4,
+      NoteAvis: 15,
+      description:
+        "Version standard de notre best-seller avec un excellent rapport qualité-prix.",
+    },
+    {
+      titre: "Nouveauté",
+      prix: 79.99,
+      note: 5,
+      NoteAvis: 8,
+      description: "Notre nouveau produit déjà très apprécié par nos clients.",
+    },
+  ];
+
   return (
-    <>
-      <div className="flex flex-wrap gap-10 justify-between items-center bg-blue-500 px-20 py-5">
-        <div>
-          <div className="bg-red-500 rounded-xl w-96 h-96">
-            YACINE
-            <div className="flex justify-between items-center px-4 ">
-              <p className="text-xl">Titre du produits </p>
-              <p className="text-xl">$89.990</p>
-            </div>
-
-            <div className="flex justify-between items-center px-4">
-              <p className="text-xl">Note du produit :  </p>
-              <div className="flex items-center gap-4">
-                <Rating
-                  value={4.5}
-                  precision={0.5} // Active les demi-étoiles
-                  max={5}
-                  size="medium"
-                  readOnly // Pas de hover effet sur les ratings
-                />
-                <span>(2)</span>
-              </div>
-            </div>
-            <div className="flex items-center px-4">
-<p>La description sera ici </p>
-            </div>
-
-<div className="mt-2 flex justify-end px-4">
-<Button className="px-6 py-6 text-base rounded-full bg-white text-black border border-black hover:bg-white">  Ajouter au panier </Button> 
-</div>
-            
-          </div>
-        </div>
-
-        <div>
-          <div className="bg-red-500 rounded-xl w-96 h-96">YACINE</div>
-        </div>
-
-        <div>
-          <div className="bg-red-500 rounded-xl w-96 h-96">YACINE</div>
-        </div>
-      </div>
-    </>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {produits.map((produits, index) => (
+        <ProductCard key={index} {...produits} />
+      ))}
+    </div>
   );
 };
 

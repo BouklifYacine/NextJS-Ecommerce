@@ -1,12 +1,14 @@
-import React from 'react'
+import React from 'react';
 
 const TitreTopVente = () => {
   return (
-    <>
-    <h1 className='text-xl md:text-4xl font-bold tracking-tighter text-center p-10'>Nos tops ventes </h1>
-    
-    </>
-  )
-}
+    <div className="text-center mb-12">
+      <h2 className="text-2xl md:text-5xl font-bold tracking-tighter text-gray-900 mb-4">
+        Nos tops ventes
+      </h2>
+      
+    </div>
+  );
+};
 
-export default TitreTopVente
+export default TitreTopVente;

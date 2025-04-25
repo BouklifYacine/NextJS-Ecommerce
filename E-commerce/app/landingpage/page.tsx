@@ -1,21 +1,16 @@
+import BlocProduitTopVente from '@/components/SectionTopVente/BlocProduitTopVente';
+import TitreTopVente from '@/components/SectionTopVente/Titre';
+import React from 'react';
 
-import BlocProduitTopVente from '@/components/SectionTopVente/BlocProduitTopVente'
-import TitreTopVente from '@/components/SectionTopVente/Titre'
-import React from 'react'
 const LandingPage = () => {
   return (
-    <>
-    <div className='bg-purple-500'>
+    <section className="bg-gray-50 py-12"> {/* Fond plus doux */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <TitreTopVente />
+        <BlocProduitTopVente />
+      </div>
+    </section>
+  );
+};
 
-    <div className='container mx-auto bg-red-500'>
-    <TitreTopVente></TitreTopVente>
-    <BlocProduitTopVente></BlocProduitTopVente>
-    </div>
-
-    </div>
-   
-    </>
-  )
-}
-
-export default LandingPage
+export default LandingPage;
