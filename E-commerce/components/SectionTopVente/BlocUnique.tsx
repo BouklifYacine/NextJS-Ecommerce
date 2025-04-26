@@ -20,7 +20,6 @@ export interface Props {
 
 const BlocUnique = ({nom, image, prix, prixpromo, categorie, description, stock}: Props) => {
 
-  console.log(prix)
   return (
     <div className="bg-white border border-gray-300 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 h-full flex flex-col">
       <div className="relative">

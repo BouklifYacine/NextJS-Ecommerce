@@ -8,12 +8,14 @@ const BlocProduitTopVente = () => {
   const { data, isLoading } = useProduits();
 
   if (isLoading) return <p>Chargement en cours...</p>;
-  
-  // Il y a une ligne "data." isolée dans votre code qui cause une erreur
+
+  const TableauTopVente = data?.slice(0,3)
+
+  console.log(TableauTopVente)
 
   return (
     <div className="flex flex-wrap justify-center gap-8">
-      {data?.map((produit, index) => (
+      {TableauTopVente?.map((produit, index) => (
         <div key={produit.id || index} className="w-full md:w-[45%] lg:w-[30%]">
           <BlocUnique 
             nom={produit.nom} 
