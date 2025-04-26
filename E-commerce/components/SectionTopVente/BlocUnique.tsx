@@ -33,6 +33,18 @@ const BlocUnique = ({
   const reduction = prixpromo ? Math.round((1 - prixpromo / prix) * 100) : 0;
   const enPromo = prixpromo && prixpromo < prix;
 
+  const AffichageTexteStock = (stock : number) => {
+    if(stock === 0) return "Rupture de stock"
+    else if (stock > 1 && stock <= 30) return "Stock moyen"
+    return "En stock "
+  }
+
+  const AffichageStyleStock = (stock : number) => {
+    if(stock === 0) return "text-red-500"
+    else if (stock > 1 && stock <= 30) return "text-amber-500"
+    return "text-green-500" 
+  }
+
   {/* Gérer l'affichage du stock en trois section En stock / Stock Moyen / Stock faible  */}
 
   return (
@@ -73,7 +85,7 @@ const BlocUnique = ({
           <div className="flex items-center gap-2">
             {enPromo ? (
               <>
-                <p className="text-lg font-bold text-green-600">{prixpromo} €</p>
+                <p className="text-lg font-bold text-green-500">{prixpromo} €</p>
                 <p className="text-sm text-gray-500 line-through">{prix} €</p>
               </>
             ) : (
@@ -87,8 +99,8 @@ const BlocUnique = ({
             <Rating value={4} precision={0.5} max={5} size="medium" readOnly />
             <span className="text-sm text-black ml-1">(4)</span>
           </div>
-          <p className={`${stock > 50 ? "text-green-500" : "text-red-500"} font-medium`}>
-            {stock > 50 ? "En stock" : "Stock faible"}
+          <p className={`${AffichageStyleStock(stock)} text-lg font-bold`}>
+            {AffichageTexteStock(stock)}
           </p>
         </div>
 
