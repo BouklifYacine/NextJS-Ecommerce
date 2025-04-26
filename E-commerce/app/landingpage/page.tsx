@@ -1,4 +1,5 @@
 import Filtres from '@/components/MainPage/Filtres';
+import BlocProduitSite from '@/components/SectionTopVente/BlocProduitSite';
 import BlocProduitTopVente from '@/components/SectionTopVente/BlocProduitTopVente';
 import TitreTopVente from '@/components/SectionTopVente/Titre';
 import React from 'react';
@@ -11,7 +12,7 @@ const LandingPage = () => {
         <BlocProduitTopVente />
         <h1 className='text-2xl md:text-7xl text-center pt-40 pb-16 font-bold tracking-tighter'>Tout nos produits </h1>
         <Filtres></Filtres>
-        
+        <BlocProduitSite></BlocProduitSite>
       </div>
     </section>
   );
