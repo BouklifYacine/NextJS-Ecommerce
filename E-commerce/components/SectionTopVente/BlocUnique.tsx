@@ -48,7 +48,6 @@ const BlocUnique = ({
     return "text-green-500" 
   }
 
-  {/* Gérer l'affichage du stock en trois section En stock / Stock Moyen / Stock faible  */}
 
   return (
     <div className="bg-white border border-gray-300 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 h-full flex flex-col">

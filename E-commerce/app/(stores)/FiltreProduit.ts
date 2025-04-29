@@ -1,43 +1,37 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-interface ProduitFiltersState {
+export type EnumsStock = "all" | "faible" | "moyen" | "excellent";
+export type EnumCategorie = "tous" | "ELECTRONIQUE" | "INFORMATIQUE" | "GAMING" | "MOBILIER";
+export type enumTri = "default" | "croissant" | "decroissant";
+
+interface FiltreProduitState {
   recherche: string;
-  setRecherche: (valeur: string) => void;
-
+  setRecherche: (val: string) => void;
   promotion: boolean;
-  setPromotion: (valeur: boolean) => void;
-
-  categorie: string;
-  setCategorie: (valeur: string) => void;
-
-  stock: string;
-  setStock: (valeur: string) => void;
-
-  triPrix: string;
-  setTriPrix: (valeur: string) => void;
+  setPromotion: (val: boolean) => void;
+  categorie: EnumCategorie;
+  setCategorie: (val: EnumCategorie) => void;
+  stock: EnumsStock;
+  setStock: (val: EnumsStock) => void;
+  triPrix: enumTri;
+  setTriPrix: (val: enumTri) => void;
 }
 
-export const StoreFiltreProduit = create<ProduitFiltersState>()(
+export const StoreFiltreProduit = create<FiltreProduitState>()(
   persist(
     (set) => ({
       recherche: "",
-      setRecherche: (valeur) => set({ recherche: valeur }),
-
+      setRecherche: (val) => set({ recherche: val }),
       promotion: false,
-      setPromotion: (valeur) => set({ promotion: valeur }),
-
+      setPromotion: (val) => set({ promotion: val }),
       categorie: "tous",
-      setCategorie: (valeur) => set({ categorie: valeur }),
-
+      setCategorie: (val) => set({ categorie: val }),
       stock: "all",
-      setStock: (valeur) => set({ stock: valeur }),
-
+      setStock: (val) => set({ stock: val }),
       triPrix: "default",
-      setTriPrix: (valeur) => set({ triPrix: valeur }),
+      setTriPrix: (val) => set({ triPrix: val }),
     }),
-    {
-      name: "produit-filters", // clé du localStorage
-    }
+    { name: "filtre-produit" }
   )
 );
