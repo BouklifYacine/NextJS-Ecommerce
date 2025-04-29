@@ -22,15 +22,25 @@ import { BoutonModifier } from "./BoutonModifier";
 
 import BoutonTriPrix from "./BoutonTriPrix";
 import BoutonAjouterProduit from "./BoutonAjouterProduit";
+import { StoreFiltreProduit } from "@/app/(stores)/FiltreProduit";
+
 
 const TableProduitComposant = () => {
-  const { data: produits, isLoading } = useProduits();
-  const [recherche, setRecherche] = useState("");
-  const [promotion, setPromotion] = useState(false);
-  const [categorie, setCategorie] = useState("tous");
-  const [stock, setStock] = useState("all");
-  const [triPrix, setTriPrix] = useState("default");
 
+  const {
+    recherche,
+    setRecherche,
+    promotion,
+    setPromotion,
+    categorie,
+    setCategorie,
+    stock,
+    setStock,
+    triPrix,
+    setTriPrix,
+  } = StoreFiltreProduit();
+  const { data: produits, isLoading } = useProduits();
+  
   const GestionduStock = (quantitestock: number) => {
     if (quantitestock <= 15) return "bg-red-500 text-white";
     else if (quantitestock >= 16 && quantitestock <= 70)
