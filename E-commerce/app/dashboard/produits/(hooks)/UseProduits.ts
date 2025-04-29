@@ -16,6 +16,19 @@ export function useProduits() {
   });
 }
 
+export function useProduitsId(id: string) {
+  return useQuery<reponseApiProduit>({
+    queryKey: ["produit", id],
+    queryFn: async () => {
+      const response = await axios.get<{ produit: reponseApiProduit }>(
+        `/api/admin/produits/${id}`
+      );
+      return response.data.produit;
+    },
+    enabled: !!id, // Ne s'exécute que si l'ID est disponible
+  });
+}
+
 export function useSupprimerProduits() {
   const queryClient = useQueryClient();
 

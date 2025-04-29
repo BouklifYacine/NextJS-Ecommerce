@@ -9,8 +9,10 @@ import { FaTag } from "react-icons/fa";
 import Image from "next/image";
 import Visa from "@/app/public/visa-logo-svgrepo-com.svg";
 import { Badge } from "../ui/badge";
+import Link from "next/link";
 
 export interface Props {
+  id: string,
   nom: string;
   image: string;
   prix: number;
@@ -28,6 +30,7 @@ const BlocUnique = ({
   categorie,
   description,
   stock,
+  id
 }: Props) => {
   
   const reduction = prixpromo ? Math.round((1 - prixpromo / prix) * 100) : 0;
@@ -79,7 +82,8 @@ const BlocUnique = ({
 
       <div className="p-6 flex-grow flex flex-col">
         <div className="flex justify-between items-start">
-          <h3 className="text-lg font-semibold text-gray-900">{nom}</h3>
+          <Link href={`/landingpage/${id}`}>
+          <h3 className="text-lg font-semibold text-gray-900 hover:underline cursor-pointer">{nom}</h3></Link>
           
           {/* Affichage du prix avec design amélioré pour les promos */}
           <div className="flex items-center gap-2">

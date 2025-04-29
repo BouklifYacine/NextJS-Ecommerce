@@ -104,7 +104,7 @@ export function MenuDeroulant() {
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Star className="mr-2 h-4 w-4" />
-                <span>Favoris</span>
+                <span>Favoris (19)</span>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Settings className="mr-2 h-4 w-4" />
