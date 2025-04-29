@@ -5,6 +5,7 @@ import React from "react";
 import LogoLiverpool from "@/app/public/Logo_FC_Liverpool.svg.png";
 import Link from "next/link";
 import { CreditCard, DoorOpen, Settings, ShoppingBasket, Table } from "lucide-react";
+import { Search } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useSession } from "next-auth/react";
 import { Deconnexion } from "./BoutonDéconnexion";
@@ -62,12 +63,19 @@ const Header = () => {
             <MenuDeroulant />
           </div>
 
-          <nav className="hidden md:flex items-center gap-8 text-lg tracking-tight">   
+          <div className="hidden md:flex flex-1 items-center justify-center mx-4">
 
-            {/* Mettre l'input de recherche ici */}     
-          
-          <Input className="w-72 placeholder:text-white placeholder:opacity-80" placeholder="Chercher un article" ></Input>
+  <div className="relative w-full max-w-md">
+    <Input
+      className="w-full pl-10 pr-4 py-2 placeholder:text-white placeholder:opacity-80"
+      placeholder="Chercher un article"
+    />
+    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-white opacity-80" />
+  </div>
+</div>
 
+    
+          <div className="hidden md:flex items-center gap-8 text-lg tracking-tight">
             {!session ? (
               <div className="flex items-center gap-6">
                 <BoutonConnexion />
@@ -179,12 +187,10 @@ const Header = () => {
                 </DropdownMenu>
                 
                 <FavoriCoeur></FavoriCoeur>
-            <LogoPanier/>
-           
-             
+                <LogoPanier/>
               </div>
             )}
-          </nav>
+          </div>
         </div>
       </div>
     </header>
