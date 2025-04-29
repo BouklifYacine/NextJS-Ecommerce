@@ -25,7 +25,7 @@ export function useProduitsId(id: string) {
       );
       return response.data.produit;
     },
-    enabled: !!id, // Ne s'exécute que si l'ID est disponible
+    enabled: !!id, 
   });
 }
 

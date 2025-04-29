@@ -13,6 +13,7 @@ const BlocProduitSite = () => {
       {data?.map((d) => (
         <div key={d.id} className="w-full md:w-[45%] lg:w-[30%]">
           <BlocUnique
+          id={d.id}
             nom={d.nom}
             image={d.images[0].urlImage}
             prix={d.prix}

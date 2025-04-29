@@ -5,7 +5,6 @@ interface PropsId {
     params : {id : string}
 }
 
-
 export async function GET(request: NextRequest, {params} : PropsId) {
     const { id } = await params;
   
