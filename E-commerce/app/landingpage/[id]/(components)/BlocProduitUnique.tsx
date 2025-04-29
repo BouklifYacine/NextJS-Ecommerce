@@ -3,7 +3,6 @@ import { MoveLeft, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
-import { HiOutlineShoppingCart } from "react-icons/hi2";
 
 interface Props {
   id: string | undefined;
@@ -35,7 +34,6 @@ const BlocProduitUnique = ({
 
   return (
     <div className="min-h-screen">
-      {/* Bouton Retour */}
       <div className="p-4 md:p-6">
         <Link href="/landingpage">
           <Button className="p-5 text-lg gap-2 bg-black text-white hover:bg-black hover:text-white" variant="outline">
@@ -45,9 +43,7 @@ const BlocProduitUnique = ({
         </Link>
       </div>
 
-      {/* Contenu principal */}
       <div className="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-16 p-4 md:p-16">
-        {/* Colonne image */}
         <div className="flex-1 w-full max-w-[500px]">
           <div className="rounded-2xl overflow-hidden aspect-square relative">
             <Image
@@ -60,7 +56,6 @@ const BlocProduitUnique = ({
           </div>
         </div>
 
-        {/* Colonne détails */}
         <div className="flex-1 w-full max-w-[500px] flex flex-col justify-center gap-4 md:gap-6">
           <p className="text-sky-500 font-bold uppercase text-lg">{categorie}</p>
           <h1 className="text-3xl md:text-5xl font-bold">{nom}</h1>
@@ -68,7 +63,6 @@ const BlocProduitUnique = ({
             {description}
           </p>
 
-          {/* Prix */}
           <div className="flex items-center gap-4 flex-wrap">
             {prixPromo && (
               <div className="flex items-center gap-4">
@@ -115,7 +109,6 @@ const BlocProduitUnique = ({
             </Button>
           </div>
 
-          {/* Stock */}
           {stock && (
             <p className="text-lg text-gray-500 font-bold">
               {stock > 10 ? "En stock" : `Derniers ${stock} disponibles`}

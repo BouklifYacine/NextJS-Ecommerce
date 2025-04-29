@@ -2,6 +2,7 @@
 import { useProduitsId } from "@/app/dashboard/produits/(hooks)/UseProduits";
 import React from "react";
 import BlocProduitUnique from "./(components)/BlocProduitUnique";
+import SkeletonProduitUnique from "./(components)/Skeleton";
 
 interface PropsId {
   params: { id: string };
@@ -12,7 +13,7 @@ const ProduitId = ({ params }: PropsId) => {
 
   if (error) return <p>Il y'a une erreur </p>;
 
-  if (isLoading) return <p>ca charge bg </p>;
+  if (isLoading) return <SkeletonProduitUnique></SkeletonProduitUnique>;
   return (
     <>
       <BlocProduitUnique
