@@ -46,56 +46,47 @@ export async function AjouterFavoris(produitId: string) {
 
 }
 
-export async function SupprimerFavoris(id: string) {
-  const session = await auth();
-  const sessionId = session?.user?.id;
-
-  const favoriId = id;
-
-  if (!session || !sessionId) {
-    throw new Error("Vous devez être connecté");
-  }
-
-  if (!favoriId || typeof favoriId !== "string") {
-    throw new Error("ID du favori invalide");
-  }
-
-  try {
-    const favori = await prisma.favori.findUnique({
-      where: {
-        id: favoriId,
-        userId: sessionId,
-      },
-    });
-
-    if (!favori) {
-      throw new Error("Favoris non trouvé");
+export async function SupprimerFavoris(produitId: string) {
+    const session = await auth();
+    const sessionId = session?.user?.id;
+  
+    if (!session || !sessionId) {
+      throw new Error("Vous devez être connecté");
     }
-
-    if (favori.userId !== sessionId) {
-      throw new Error("Non autorisé - Ce favori ne vous appartient pas");
+  
+    try {
+      // Trouve d'abord le favori existant
+      const favori = await prisma.favori.findFirst({
+        where: {
+          produitId: produitId,
+          userId: sessionId
+        }
+      });
+  
+      if (!favori) {
+        return {
+          success: false,
+          message: "Favori non trouvé"
+        };
+      }
+  
+      // Supprime le favori
+      await prisma.favori.delete({
+        where: {
+          id: favori.id // Utilise l'ID du favori trouvé
+        }
+      });
+  
+      return {
+        success: true,
+        message: "Favori supprimé avec succès"
+      };
+    } catch (error) {
+      console.error(error);
+      return {
+        success: false,
+        message: "Erreur serveur"
+      };
     }
-
-    await prisma.favori.delete({
-      where: {
-        id: favoriId,
-      },
-    });
-
-    const nombrefavoris = await prisma.favori.count({
-      where: { userId: sessionId },
-    });
-
-    return {
-      success: true,
-      message: "Favori supprimé avec succès",
-      nombrefavoris,
-    };
-  } catch (error) {
-    console.error(error);
-    return {
-      success: false,
-      message: "Erreur serveur ",
-    };
   }
-}
+  

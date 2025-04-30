@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { AjouterFavoris } from "../(actions)/FavorisAction";
+import { AjouterFavoris, SupprimerFavoris } from "../(actions)/FavorisAction";
 import { useSession } from "next-auth/react";
 import { Favori } from "../(types)/favoris";
 
@@ -40,10 +40,8 @@ export function useAjouterFavoris() {
     mutationFn: AjouterFavoris,
 
     onMutate: async (produitId: string) => {
-      // Annule les requêtes en cours sur "favoris"
       await queryClient.cancelQueries({ queryKey: ["favoris"] })
 
-      // Sauvegarde l'ancien état
       const anciensFavoris = queryClient.getQueryData<Favori[]>(["favoris"]) || []
 
       // Ajoute le nouveau favori "optimiste"
@@ -52,12 +50,11 @@ export function useAjouterFavoris() {
       return { anciensFavoris }
     },
 
-    // Étape 2: Si erreur, on annule
     onError: (err, _, context) => {
       if (context?.anciensFavoris) {
         queryClient.setQueryData(["favoris"], context.anciensFavoris)
       }
-      alert(`Erreur: ${err.message}`) // Simple alert pour l'exemple
+      alert(`Erreur: ${err.message}`)
     },
 
     onSettled: () => {
@@ -65,3 +62,31 @@ export function useAjouterFavoris() {
     }
   })
 }
+
+export function useSupprimerFavoris() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: SupprimerFavoris,
+    // onMutate: async (produitId) => {
+    //   await queryClient.cancelQueries({ queryKey: ["favoris"] });
+    //   const previousFavoris = queryClient.getQueryData<Favori[]>("favoris") || [];
+      
+    //   // Optimistic update
+    //   queryClient.setQueryData<Favori[]>("favoris", (old = []) => 
+    //     old.filter(f => f.produit.id !== produitId)
+    //   );
+
+    //   return { previousFavoris };
+    // },
+    // onError: (err, produitId, context) => {
+    //   if (context?.previousFavoris) {
+    //     queryClient.setQueryData(["favoris"], context.previousFavoris);
+    //   }
+    // },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["favoris"] });
+    }
+  });
+}
+

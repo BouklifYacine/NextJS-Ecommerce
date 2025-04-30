@@ -10,7 +10,7 @@ import Image from "next/image";
 import Visa from "@/app/public/visa-logo-svgrepo-com.svg";
 import { Badge } from "../ui/badge";
 import Link from "next/link";
-import { useAjouterFavoris, useFavoris } from "@/app/(hooks)/useFavoris";
+import { useAjouterFavoris, useFavoris, useSupprimerFavoris } from "@/app/(hooks)/useFavoris";
 
 export interface Props {
   id: string,
@@ -34,8 +34,31 @@ const BlocUnique = ({
   id
 }: Props) => {
   
-  const {mutate, isPending} = useAjouterFavoris()
-  const {data : Favoris} = useFavoris()
+  const { mutate: ajouterFavori, isPending: ajoutEnCours } = useAjouterFavoris();
+  const { mutate: supprimerFavori, isPending: suppressionEnCours } = useSupprimerFavoris();
+  const { data: Favoris } = useFavoris();
+
+  // Vérifie si le produit est dans les favoris
+  const estFavori = Favoris?.produits.some((p) => p.id === id)
+  const enChargement = ajoutEnCours || suppressionEnCours;
+
+  const toggleFavori = () => {
+    if (estFavori) {
+      supprimerFavori(id); // On passe produitId ici
+    } else {
+      ajouterFavori(id);
+    }
+  };
+
+
+
+  const stylesCoeur = `text-xl ${
+    enChargement
+      ? "text-gray-400" 
+      : estFavori 
+        ? "text-red-500 fill-red-500" 
+        : "text-black hover:text-red-500"
+  }`;
   
   const reduction = prixpromo ? Math.round((1 - prixpromo / prix) * 100) : 0;
   const enPromo = prixpromo && prixpromo < prix;
@@ -52,19 +75,6 @@ const BlocUnique = ({
     return "text-green-500" 
   }
 
-  const AjouterFavoris = () => {
-    mutate(id)
-  }
-
-  const estFavori = Favoris?.produits.some((p => p.id === id))
-
-  const stylesCoeur = `text-xl ${
-    isPending 
-      ? "text-gray-400" 
-      : estFavori 
-        ? "text-red-500 fill-red-500" 
-        : "text-black hover:text-red-500"
-  }`;
 
 
 
@@ -78,8 +88,8 @@ const BlocUnique = ({
           width={500}
           height={500}
         />
-        <button onClick={AjouterFavoris}
-        disabled={isPending}
+        <button onClick={toggleFavori}
+        disabled={enChargement}
           className="absolute top-3 right-3 bg-white/90 p-2 rounded-full shadow-md hover:bg-gray-100 transition-colors border border-gray-400"
           aria-label="Ajouter aux favoris"
         >
