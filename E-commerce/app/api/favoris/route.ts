@@ -8,7 +8,12 @@ export async function GET(request: NextRequest) {
 
   const sessionId = session?.user?.id
 
-  if(!session || !sessionId) return NextResponse.json({message : "Vous devez etre connecté"} , {status : 403})
+  if(!session || !sessionId) {
+    return NextResponse.json({
+      nombrefavoris: 0,
+      message: "Connectez-vous pour voir vos favoris"
+    })
+  }
 
   try {
     
@@ -24,10 +29,8 @@ export async function GET(request: NextRequest) {
     const produits = favoris.map(f => f.produit)
 
     return NextResponse.json({
-      data: {
         nombrefavoris,
-        produits 
-      },
+        produits, 
       message: `Vous avez ${nombrefavoris} favoris`
     });
 
@@ -46,11 +49,13 @@ export async function POST(request: NextRequest) {
   try {
     const { produitId } = await request.json();
 
-    const resultat = SchemaFavoris.safeParse({produitId})
+    const resultat = SchemaFavoris.safeParse(produitId)
 
     if(!resultat.success) {
       return NextResponse.json(
-        { message: "Données invalides"},
+        {
+ message: "Données invalides",
+        },
         { status: 400 }
       );
     }
@@ -63,7 +68,7 @@ export async function POST(request: NextRequest) {
     }
 
     const [produit, favoriExistant] = await prisma.$transaction([
-      prisma.produit.findUnique({ where: { id: produitId }, select : {id : true, nom : true}}),
+      prisma.produit.findUnique({ where: { id: produitId } }),
       prisma.favori.findUnique({
         where: { userId_produitId: { userId: id, produitId } }
       })
@@ -71,14 +76,14 @@ export async function POST(request: NextRequest) {
 
     if (!produit) {
       return NextResponse.json(
-        { message: "Produit introuvable" },
+        { success: false, message: "Produit introuvable" },
         { status: 404 }
       );
     }
 
     if (favoriExistant) {
       return NextResponse.json(
-        { message: "Déjà dans vos favoris" },
+        { success: false, message: "Déjà dans vos favoris" },
         { status: 409 }
       );
     }
