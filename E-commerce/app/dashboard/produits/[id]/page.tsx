@@ -5,6 +5,8 @@ import { useProduits } from '../(hooks)/UseProduits';
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import FormulaireModifierProduit from '../(components)/FormulaireModifierProduit';
+import { useSession } from 'next-auth/react';
+import { redirect } from 'next/navigation';
 
 interface Props {
   params: { id: string } 
@@ -13,6 +15,9 @@ interface Props {
 const ProduitID = ({ params }: Props) => {
   
   const { data: produits, isLoading } = useProduits();
+  const { data: session } = useSession()
+  const sessionId = session?.user?.id
+  if(!sessionId) return redirect("/")
   const produit = produits?.find(p => p.id.toString() === params.id);
   
   if (isLoading) {

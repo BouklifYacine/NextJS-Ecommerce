@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
@@ -37,7 +37,7 @@ const FormulaireModifierProduit = ({produit} : BoutonModifierProps) => {
 
     const handleImageUpload = (result: { url: string; publicId: string }) => {
       setImageData(result);
-      setValue('image', { 
+      setValue('images', { 
         urlImage: result.url, 
         publicId: result.publicId 
       });
@@ -57,22 +57,25 @@ const FormulaireModifierProduit = ({produit} : BoutonModifierProps) => {
                           formData.prixPromo > 0 &&
                           formData.prixPromo < formData.prix;
 
-      const apiData = {
-        ...formData,
-        prixPromo,
-        enPromotion,
-        id: produit.id,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        image: {
-            ...formData.image,
-            id: "",
-            produitId: "",
-            principale: true,
-            createdAt: new Date(),
-            updatedAt: new Date()
-          }
-      } as reponseApiProduit;
+                          const apiData = {
+                            ...formData,
+                            prixPromo,
+                            enPromotion,
+                            id: produit.id,
+                            createdAt: new Date(),
+                            updatedAt: new Date(),
+                            images: [
+                              {
+                                ...formData.images,
+                                id: "",
+                                produitId: "",
+                                principale: true,
+                                createdAt: new Date(),
+                                updatedAt: new Date(),
+                              }
+                            ],
+                          } as reponseApiProduit;
+                          
     
       mutate({ id: produit.id, data: apiData }, {
         onSuccess: (data) => {
@@ -227,7 +230,7 @@ const FormulaireModifierProduit = ({produit} : BoutonModifierProps) => {
                 </Button>
               )}
             </CldUploadWidget>
-            {errors.image && <p className="text-red-500 text-sm">{errors.image.message}</p>}
+            {errors.images && <p className="text-red-500 text-sm">{errors.images.message}</p>}
             
             {imageData && (
               <div className="mt-2 flex flex-col items-center">
