@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
   try {
     const { produitId } = await request.json();
 
-    const resultat = SchemaFavoris.safeParse(produitId)
+    const resultat = SchemaFavoris.safeParse({produitId})
 
     if(!resultat.success) {
       return NextResponse.json(
