@@ -1,11 +1,7 @@
 import { prisma } from "@/prisma";
 import { NextRequest, NextResponse } from "next/server";
-import { AccesAdmin } from "@/lib/SessionAdmin";
 
 export async function GET(request: NextRequest) {
-  const Admin = await AccesAdmin();
-  
-  if (Admin !== true) { return Admin }
 
   try {
     const produits = await prisma.produit.findMany({

@@ -30,8 +30,10 @@ export default function RootLayout({
       )}>
         <QueryProvider>
         <AuthProvider>
+        
         {children}
         <Toaster position="top-center" />
+      
         </AuthProvider>
         </QueryProvider>
       </body>

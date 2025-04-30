@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { BarreLaterale } from "../_components/BarreLatérale";
 import { auth } from "@/auth";
 import Header from "@/components/header";
+import Footer from "@/components/FooterComponents/Footer";
 
 
 export default async function PageParametres({params}: {params: Promise<{ id: string }>}) {
@@ -25,6 +26,7 @@ export default async function PageParametres({params}: {params: Promise<{ id: st
           <BarreLaterale userId={id} />
         </div>
       </div>
+      <Footer></Footer>
     </>
   );
 }
