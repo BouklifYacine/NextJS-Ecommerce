@@ -11,6 +11,7 @@ interface Props {
 }
 
 const ProduitID = ({ params }: Props) => {
+  
   const { data: produits, isLoading } = useProduits();
   const produit = produits?.find(p => p.id.toString() === params.id);
   

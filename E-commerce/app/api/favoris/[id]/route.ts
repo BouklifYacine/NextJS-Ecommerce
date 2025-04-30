@@ -8,18 +8,18 @@ export async function DELETE(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
-//   const session = await auth();
-//   const sessionId = session?.user?.id;
-const id = "cm95g4yuq000girjgiaapylb0"; // À dynamiser
+  const session = await auth();
+  const sessionId = session?.user?.id;
+
   const favoriId = await params.id;
 
-  // Vérifier si l'utilisateur est connecté
-//   if (!session || !sessionId) {
-//     return NextResponse.json(
-//       { message: "Vous devez être connecté" },
-//       { status: 401 }
-//     );
-//   }
+
+  if (!session || !sessionId) {
+    return NextResponse.json(
+      { message: "Vous devez être connecté" },
+      { status: 401 }
+    );
+  }
 
 if (!favoriId || typeof favoriId !== "string") {
     return NextResponse.json(
@@ -33,7 +33,7 @@ if (!favoriId || typeof favoriId !== "string") {
     const favori = await prisma.favori.findUnique({
       where: {
         id: favoriId,
-        userId: id
+        userId: sessionId
       }
     });
 
@@ -44,7 +44,7 @@ if (!favoriId || typeof favoriId !== "string") {
       );
     }
 
-    if (favori.userId !== id) {
+    if (favori.userId !== sessionId) {
         return NextResponse.json(
           { message: "Non autorisé - Ce favori ne vous appartient pas" },
           { status: 403 }
@@ -58,7 +58,7 @@ if (!favoriId || typeof favoriId !== "string") {
     });
 
     const nombrefavoris = await prisma.favori.count({
-      where: { userId: id }
+      where: { userId: sessionId }
     });
 
     return NextResponse.json({

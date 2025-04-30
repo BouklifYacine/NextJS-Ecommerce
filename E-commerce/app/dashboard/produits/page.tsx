@@ -1,12 +1,21 @@
-import React from 'react'
-import ComposantPrincipal from './(components)/ComposantPrincipal'
+import React from "react";
+import ComposantPrincipal from "./(components)/ComposantPrincipal";
+import { auth } from "@/auth";
+import { AccesAdmin } from "@/lib/SessionAdmin";
+import { redirect } from "next/navigation";
 
-const DashboardProduits = () => {
+const DashboardProduits = async () => {
+  const session = await auth();
+  const sessionId = session?.user?.id;
+  const admin = await AccesAdmin();
+
+  if (!session || !sessionId || !admin) return redirect("/");
+
   return (
-   <>
-   <ComposantPrincipal></ComposantPrincipal>
-   </>
-  )
-}
+    <>
+      <ComposantPrincipal />
+    </>
+  );
+};
 
-export default DashboardProduits
+export default DashboardProduits;
