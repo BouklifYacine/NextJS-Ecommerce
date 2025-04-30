@@ -1,6 +1,26 @@
 import { prisma } from "@/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
+export async function GET(request: NextRequest){
+
+  const id = "cm95g4yuq000girjgiaapylb0"
+
+  const utilisateur = await prisma.user.findUnique({
+    where : {id : id}, 
+    include : {favoris : true}
+  })
+
+  if(!utilisateur) return NextResponse.json("Il n'y a pas d'user", {status : 400})
+  
+  const NombreFavoris = utilisateur.favoris.length
+
+  return NextResponse.json({
+    message : `Vous avez ${NombreFavoris} favoris`,
+    NombreFavoris
+  })
+
+}
+
 export async function POST(request: NextRequest) {
 
 const id = "cm95g4yuq000girjgiaapylb0"
