@@ -2,7 +2,7 @@
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Github from "@/app/public/Github.png";
-import Google from "@/app/public/Google.png";
+import Google from "@/app/public/google.png";
 import React from "react";
 
 const BoutonConnexionProviders = () => {
