@@ -10,6 +10,7 @@ import Image from "next/image";
 import Visa from "@/app/public/visa-logo-svgrepo-com.svg";
 import { Badge } from "../ui/badge";
 import Link from "next/link";
+import { useAjouterFavoris, useFavoris } from "@/app/(hooks)/useFavoris";
 
 export interface Props {
   id: string,
@@ -33,6 +34,9 @@ const BlocUnique = ({
   id
 }: Props) => {
   
+  const {mutate, isPending} = useAjouterFavoris()
+  const {data : Favoris} = useFavoris()
+  
   const reduction = prixpromo ? Math.round((1 - prixpromo / prix) * 100) : 0;
   const enPromo = prixpromo && prixpromo < prix;
 
@@ -48,6 +52,21 @@ const BlocUnique = ({
     return "text-green-500" 
   }
 
+  const AjouterFavoris = () => {
+    mutate(id)
+  }
+
+  const estFavori = Favoris?.produits.some((p => p.id === id))
+
+  const stylesCoeur = `text-xl ${
+    isPending 
+      ? "text-gray-400" 
+      : estFavori 
+        ? "text-red-500 fill-red-500" 
+        : "text-black hover:text-red-500"
+  }`;
+
+
 
   return (
     <div className="bg-white border border-gray-300 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 h-full flex flex-col">
@@ -59,11 +78,12 @@ const BlocUnique = ({
           width={500}
           height={500}
         />
-        <button
+        <button onClick={AjouterFavoris}
+        disabled={isPending}
           className="absolute top-3 right-3 bg-white/90 p-2 rounded-full shadow-md hover:bg-gray-100 transition-colors border border-gray-400"
           aria-label="Ajouter aux favoris"
         >
-          <FaHeart className="text-red-500 text-xl hover:text-red-600" />
+         <FaHeart className={stylesCoeur} />
         </button>
 
         <Badge className="absolute top-3 left-3 bg-white/90 p-2 rounded-xl text-sm shadow-md text-black border border-gray-400">

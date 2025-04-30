@@ -1,6 +1,5 @@
 import { auth } from "@/auth";
 import { prisma } from "@/prisma";
-import { NextResponse } from "next/server";
 
 export async function SessionAdmin() {
     const session = await auth();
