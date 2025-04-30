@@ -11,6 +11,8 @@ import Visa from "@/app/public/visa-logo-svgrepo-com.svg";
 import { Badge } from "../ui/badge";
 import Link from "next/link";
 import { useAjouterFavoris, useFavoris, useSupprimerFavoris } from "@/app/(hooks)/useFavoris";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export interface Props {
   id: string,
@@ -37,14 +39,20 @@ const BlocUnique = ({
   const { mutate: ajouterFavori, isPending: ajoutEnCours } = useAjouterFavoris();
   const { mutate: supprimerFavori, isPending: suppressionEnCours } = useSupprimerFavoris();
   const { data: Favoris } = useFavoris();
+  const { data: session, status } = useSession();
+  const Router = useRouter()
 
-  // Vérifie si le produit est dans les favoris
-  const estFavori = Favoris?.produits.some((p) => p.id === id)
+  const estFavori = Favoris?.produits?.some?.((p) => p.id === id) ?? false;
   const enChargement = ajoutEnCours || suppressionEnCours;
 
   const toggleFavori = () => {
+
+    if(!session?.user?.id || !session){
+      Router.push('/connexion')
+      return 
+    }
     if (estFavori) {
-      supprimerFavori(id); // On passe produitId ici
+      supprimerFavori(id); 
     } else {
       ajouterFavori(id);
     }
