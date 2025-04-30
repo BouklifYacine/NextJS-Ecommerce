@@ -1,7 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { AjouterFavoris, SupprimerFavoris } from "../(actions)/FavorisAction";
-import { useSession } from "next-auth/react";
 import { Favori } from "../(types)/favoris";
 
 interface Produit {

@@ -1,8 +1,9 @@
 import React from 'react'
+import ListeFavoris from './(components)/ListeFavoris'
 
 const Favoris = () => {
   return (
-    <div>Favoris</div>
+   <><ListeFavoris></ListeFavoris></>
   )
 }
 
