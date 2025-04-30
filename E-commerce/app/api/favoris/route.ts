@@ -1,72 +1,104 @@
+import { SchemaFavoris } from "@/app/(schema)/favoris/SchemaFavoris";
+import { auth } from "@/auth";
 import { prisma } from "@/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(request: NextRequest){
+export async function GET(request: NextRequest) {
+  const session = await auth() 
 
-  const id = "cm95g4yuq000girjgiaapylb0"
+  const sessionId = session?.user?.id
 
-  const utilisateur = await prisma.user.findUnique({
-    where : {id : id}, 
-    include : {favoris : true}
-  })
+  if(!session || !sessionId) return NextResponse.json({message : "Vous devez etre connecté"} , {status : 403})
 
-  if(!utilisateur) return NextResponse.json("Il n'y a pas d'user", {status : 400})
-  
-  const NombreFavoris = utilisateur.favoris.length
+  try {
+    
+    const [nombrefavoris, favoris] = await prisma.$transaction([
+      prisma.favori.count({ where: { userId: sessionId } }),
+      prisma.favori.findMany({
+        where: { userId: sessionId },  
+        include: { produit: true },
+        orderBy: { createdAt: "desc" } 
+      })
+    ]);
 
-  return NextResponse.json({
-    message : `Vous avez ${NombreFavoris} favoris`,
-    NombreFavoris
-  })
+    const produits = favoris.map(f => f.produit)
 
+    return NextResponse.json({
+      data: {
+        nombrefavoris,
+        produits 
+      },
+      message: `Vous avez ${nombrefavoris} favoris`
+    });
+
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { success: false, message: "Erreur serveur" },
+      { status: 500 }
+    );
+  }
 }
 
 export async function POST(request: NextRequest) {
+  const id = "cm95g4yuq000girjgiaapylb0"; // À dynamiser
 
-const id = "cm95g4yuq000girjgiaapylb0"
+  try {
+    const { produitId } = await request.json();
 
-  const body = await request.json();
-  const produitId = body.produitId as string;
-  if (!produitId) {
-    return NextResponse.json({ error: "ID produit manquant" }, { status: 400 });
-  }
+    const resultat = SchemaFavoris.safeParse({produitId})
 
-  const produit = await prisma.produit.findUnique({
-    where: { id: produitId },
-  });
-  if (!produit) {
-    return NextResponse.json({ error: "Produit introuvable" }, { status: 404 });
-  }
+    if(!resultat.success) {
+      return NextResponse.json(
+        { message: "Données invalides"},
+        { status: 400 }
+      );
+    }
+    
+    if (!produitId) {
+      return NextResponse.json(
+        { success: false, message: "ID produit manquant" }, 
+        { status: 400 }
+      );
+    }
 
+    const [produit, favoriExistant] = await prisma.$transaction([
+      prisma.produit.findUnique({ where: { id: produitId }, select : {id : true, nom : true}}),
+      prisma.favori.findUnique({
+        where: { userId_produitId: { userId: id, produitId } }
+      })
+    ]);
 
-  const favoriExistant = await prisma.favori.findUnique({
-    where: {
-      userId_produitId: {
-        userId: id,
-        produitId,
-      },
-    },
-  });
-  if (favoriExistant) {
+    if (!produit) {
+      return NextResponse.json(
+        { message: "Produit introuvable" },
+        { status: 404 }
+      );
+    }
+
+    if (favoriExistant) {
+      return NextResponse.json(
+        { message: "Déjà dans vos favoris" },
+        { status: 409 }
+      );
+    }
+
+    await prisma.favori.create({
+      data: { userId: id, produitId }
+    });
+
     return NextResponse.json(
-      { error: "Cet article est déjà dans vos favoris" },
-      { status: 409 }
+      {  
+        message: `${produit.nom} ajouté aux favoris`
+      },
+      { status: 201 }
+    );
+
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { success: false, message: "Erreur serveur" },
+      { status: 500 }
     );
   }
-
- await prisma.favori.create({
-    data: {
-        userId: id,
-      produitId,
-    },
-  });
-
-  
-
-  const produitnom = produit.nom
-
-  return NextResponse.json(
-    { message: "Ajouté aux favoris", produitnom },
-    { status: 201 }
-  );
 }
