@@ -2,6 +2,38 @@ import { SchemaPanier } from "@/app/(schema)/panier/SchemaPanier";
 import { prisma } from "@/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
+export async function GET(request: NextRequest){
+  const userId = "cma5ilzq40000irgg8rpod0l9"; 
+
+  if(!userId) {
+    return NextResponse.json({message : "Vous devez etre connecté pour voir votre panier "})
+  }
+
+  const panier = await prisma.panier.findUnique({
+    where : {
+      userId : userId
+    }, 
+    include : {
+      items : {
+        include : {produit : true}
+      }
+    }, 
+  
+  })
+
+  if(!panier) {
+    return NextResponse.json({message : "Vous n'avez pas d'article dans votre panier "} , {status : 400})
+  }
+
+  if(userId !== panier.userId){
+    return NextResponse.json({message : " Ce panier ne vous appartient pas "}, {status : 400})
+  }
+
+  return NextResponse.json({panier})
+
+
+}
+
 export async function POST(request: NextRequest) {
   try {
     const userId = "cma5ilzq40000irgg8rpod0l9"; 
