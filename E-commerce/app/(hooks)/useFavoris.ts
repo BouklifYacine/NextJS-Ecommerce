@@ -12,8 +12,16 @@ interface Produit {
   quantiteStock: number;
   enPromotion: boolean;
   categorie: string;
+  images :Image[],
   createdAt: string;
   updatedAt: string;
+}
+
+interface Image {
+  id : string , 
+  produitId : string , 
+  produit : Produit, 
+  urlImage : string 
 }
 
 interface ApiFavoris {

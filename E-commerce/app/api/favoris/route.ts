@@ -21,7 +21,13 @@ export async function GET(request: NextRequest) {
       prisma.favori.count({ where: { userId: sessionId } }),
       prisma.favori.findMany({
         where: { userId: sessionId },  
-        include: { produit: true },
+        include: { produit: {
+          include : {
+            images  : true
+          }
+        }
+
+          },
         orderBy: { createdAt: "desc" } 
       })
     ]);

@@ -1,5 +1,6 @@
 import { useFavoris } from "@/app/(hooks)/useFavoris";
 import { CouleurIcone, FormatCompteur, TailleBadge } from "@/lib/FonctionIconeNavbar";
+import Link from "next/link";
 import React from "react";
 import { FaHeart } from "react-icons/fa";
 import { ImSpinner8 } from "react-icons/im";
@@ -11,13 +12,15 @@ const FavoriCoeur = () => {
   
   return (
     <div className="relative inline-block">
-      <FaHeart className={`${CouleurFavoris}`} size={36} />
+      <Link href='/favoris'>
+      <FaHeart className={`${CouleurFavoris}`} size={36} /></Link>
       <div className={`absolute -top-2 -right-2 ${TailleBadge(nombre)} bg-white text-black rounded-full flex items-center justify-center font-medium`}>
         {isLoading ? (
           <ImSpinner8 className="animate-spin h-4 w-4" />
         ) : (
           FormatCompteur(nombre)
         )}
+        
       </div>
     </div>
   );
