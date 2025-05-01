@@ -1,8 +1,10 @@
 "use client";
 import { useProduitsId } from "@/app/dashboard/produits/(hooks)/UseProduits";
+
 import React from "react";
-import BlocProduitUnique from "./(components)/BlocProduitUnique";
-import SkeletonProduitUnique from "./(components)/Skeleton";
+import SkeletonProduitUnique from "../(components)/Skeleton";
+import BlocProduitUnique from "../(components)/BlocProduitUnique";
+
 
 interface PropsId {
   params: { id: string };

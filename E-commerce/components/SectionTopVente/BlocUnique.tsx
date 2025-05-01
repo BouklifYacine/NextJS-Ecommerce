@@ -119,7 +119,7 @@ const BlocUnique = ({
 
       <div className="p-6 flex-grow flex flex-col">
         <div className="flex justify-between items-start">
-          <Link href={`/landingpage/${id}`}>
+          <Link href={`/produits/${id}`}>
           <h3 className="text-lg font-semibold text-gray-900 hover:underline cursor-pointer">{nom}</h3></Link>
           
           {/* Affichage du prix avec design amélioré pour les promos */}

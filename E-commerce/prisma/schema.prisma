@@ -20,16 +20,18 @@ model User {
   adresses         Adresse[]
   commandes        Commande[]
   avis             Avis[]
-   abonnement       Abonnement?
+  abonnement       Abonnement?
   plan             Plan            @default(free)
   clientId         String?         @unique
   favoris          Favori[]
   accounts         Account[]
   sessions         Session[]
-  Authenticator    Authenticator[]
+  authenticators   Authenticator[]
+  panier           Panier?
   createdAt        DateTime        @default(now())
   updatedAt        DateTime        @updatedAt
 }
+
 model Abonnement {
   id                 String         @id @default(cuid())
   userId             String         @unique
@@ -83,14 +85,15 @@ model Produit {
   nom              String
   description      String            @db.Text
   prix             Float
-  prixPromo         Float?
+  prixPromo        Float?
   quantiteStock    Int               @default(0)
   enPromotion      Boolean           @default(false)
-  categorie        Categorie // Utilise directement l'enum
+  categorie        Categorie
   images           ImageProduit[]
   avis             Avis[]
   produitCommandes CommandeProduit[]
   favoris          Favori[]
+  panierItems      PanierItem[]
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
 }
@@ -99,7 +102,7 @@ model ImageProduit {
   id         String   @id @default(cuid())
   produitId  String
   produit    Produit  @relation(fields: [produitId], references: [id], onDelete: Cascade)
-  urlImage   String // URL vers Cloudinary
+  urlImage   String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 }
@@ -117,7 +120,28 @@ model Avis {
   updatedAt    DateTime @updatedAt
 }
 
-// Produit favori
+model Panier {
+  id         String       @id @default(cuid())
+  userId     String       @unique
+  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items      PanierItem[]
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+}
+
+model PanierItem {
+  id         String   @id @default(cuid())
+  panierId   String
+  panier     Panier   @relation(fields: [panierId], references: [id], onDelete: Cascade)
+  produitId  String
+  produit    Produit  @relation(fields: [produitId], references: [id])
+  quantite   Int      @default(1)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([panierId, produitId])
+}
+
 model Favori {
   id        String   @id @default(cuid())
   userId    String
@@ -136,26 +160,22 @@ model Commande {
   numeroCommande String            @unique
   produits       CommandeProduit[]
   statut         StatutCommande    @default(EN_ATTENTE)
-
-  // Dates des changements de statut pour l'historique simplifié
-  dateCreation   DateTime  @default(now())
-  dateTraitement DateTime? // Quand statut passe à EN_TRAITEMENT
-  dateExpedition DateTime? // Quand statut passe à EXPEDIE
-  dateLivraison  DateTime? // Quand statut passe à LIVRE
-  dateAnnulation DateTime? // Quand statut passe à ANNULE
-
-  total                Float
-  tva                  Float
-  fraisLivraison       Float
-  adresseId            String?
-  adresseLivraison     Adresse?      @relation(fields: [adresseId], references: [id])
-  methodeLivraison     ModeLivraison @default(STANDARD)
-  annulable            Boolean       @default(true)
-  updatedAt            DateTime      @updatedAt
+  dateCreation   DateTime          @default(now())
+  dateTraitement DateTime?         
+  dateExpedition DateTime?         
+  dateLivraison  DateTime?         
+  dateAnnulation DateTime?         
+  total          Float
+  tva            Float
+  fraisLivraison Float
+  adresseId      String?
+  adresseLivraison Adresse?         @relation(fields: [adresseId], references: [id])
+  methodeLivraison ModeLivraison   @default(STANDARD)
+  annulable       Boolean           @default(true)
+  updatedAt       DateTime          @updatedAt
   dateLivraisonEstimee DateTime?
 }
 
-// Produit dans une commande
 model CommandeProduit {
   id           String   @id @default(cuid())
   commandeId   String
@@ -205,7 +225,7 @@ model Session {
   sessionToken String   @unique
   userId       String
   expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
