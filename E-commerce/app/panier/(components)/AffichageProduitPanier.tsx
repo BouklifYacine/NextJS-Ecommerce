@@ -1,23 +1,35 @@
 "use client";
 
 import React from "react";
-import { useGetPanier } from "../(hook)/useGetPanier"; 
+import { useGetPanier } from "../(hook)/useGetPanier";
 
 const AffichageProduitPanier = () => {
   const { data, isLoading, error } = useGetPanier();
 
-  if (isLoading) { return <div className="container mx-auto"><p>Chargement...</p></div>; }
+  if (isLoading) {
+    return (
+      <div className="container mx-auto">
+        <p>Chargement...</p>
+      </div>
+    );
+  }
 
-  if (error) { return <div className="container mx-auto"><p>Erreur: {error.message}</p></div>;}
+  if (error) {
+    return (
+      <div className="container mx-auto">
+        <p>Erreur: {error.message}</p>
+      </div>
+    );
+  }
 
   const produitPanier = data?.panier?.items;
 
- const prixTotal = produitPanier?.reduce((acc, item) => {
-    const totalProduit = item.quantite * item.produit.prix
-    return acc + totalProduit
- }, 0)
+  const prixTotal = produitPanier?.reduce((acc, item) => {
+    const totalProduit = item.quantite * item.produit.prix;
+    return acc + totalProduit;
+  }, 0);
 
- 
+  const prixHorsTaxe = prixTotal ? prixTotal / 1.2 : 0;
 
   return (
     <>
@@ -25,24 +37,32 @@ const AffichageProduitPanier = () => {
         <h1>Mon Panier</h1>
 
         <div>
-                <p>Prix total du panier : {prixTotal} euros</p>
-              </div>
-       
+          <p>Prix total du panier : {prixTotal ? prixTotal : 0 } euros</p>
+          <p>Prix hors taxe : {prixHorsTaxe}</p>
+        </div>
+
         {produitPanier && produitPanier.length > 0 ? (
           produitPanier.map((produit) => (
-            <div key={produit.id} style={{ borderBottom: '1px solid #ccc', marginBottom: '10px', paddingBottom: '10px' }}>
-              <p><strong>{produit.produit.nom}</strong></p>
+            <div
+              key={produit.id}
+              style={{
+                borderBottom: "1px solid #ccc",
+                marginBottom: "10px",
+                paddingBottom: "10px",
+              }}
+            >
+              <p>
+                <strong>{produit.produit.nom}</strong>
+              </p>
               <p>Description: {produit.produit.description}</p>
               <p>Quantité: {produit.quantite}</p>
               <p>Prix unitaire: {produit.produit.prix} €</p>
-              <p>Total pour cet article: {produit.quantite * produit.produit.prix} €</p>
-
-          
-          
+              <p>
+                Total pour cet article:{" "}
+                {produit.quantite * produit.produit.prix} €
+              </p>
             </div>
           ))
-
-          
         ) : (
           <p>Votre panier est vide.</p>
         )}
