@@ -1,11 +1,14 @@
 import { SchemaPanier } from "@/app/(schema)/panier/SchemaPanier";
+import { auth } from "@/auth";
 import { prisma } from "@/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest){
-  const userId = "cma5ilzq40000irgg8rpod0l9"; 
 
-  if(!userId) {
+  const session = await auth()
+  const userId = session?.user?.id; 
+
+  if(!userId || !session) {
     return NextResponse.json({message : "Vous devez etre connecté pour voir votre panier "})
   }
 
