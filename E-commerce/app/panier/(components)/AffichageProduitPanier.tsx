@@ -1,11 +1,12 @@
 "use client";
 
 import React from "react";
-import { useGetPanier } from "../(hook)/useGetPanier";
+import { useGetPanier, useSupprimerPanier } from "../(hook)/useGetPanier";
 import { Trash2 } from "lucide-react";
 
 const AffichageProduitPanier = () => {
   const { data, isLoading, error } = useGetPanier();
+  const {mutate , isPending} = useSupprimerPanier()
 
   if (isLoading) {
     return (
@@ -24,6 +25,11 @@ const AffichageProduitPanier = () => {
   }
 
   const produitPanier = data?.panier?.items;
+  const PanierId = data?.panier.id
+
+  const supprimerPanier = () => {
+    mutate(PanierId!)
+  }
 
   const prixTotal = produitPanier?.reduce((acc, item) => {
     const totalProduit = item.quantite * item.produit.prix;
@@ -37,7 +43,7 @@ const AffichageProduitPanier = () => {
       <div className="container mx-auto">
         <h1>Mon Panier</h1>
 
-        <Trash2 className="text-red-500" size={44}></Trash2>
+        <Trash2 onClick={supprimerPanier} className="text-red-500 cursor-pointer" size={44}></Trash2>
 
         <div>
           <p>Prix total du panier : {prixTotal ? prixTotal.toFixed(2) : 0 } €</p>
