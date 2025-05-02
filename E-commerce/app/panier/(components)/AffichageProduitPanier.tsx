@@ -5,21 +5,13 @@ import { useGetPanier, useSupprimerPanier } from "../(hook)/useGetPanier";
 import { Trash2 } from "lucide-react";
 
 const AffichageProduitPanier = () => {
-  const { data, isLoading, error } = useGetPanier();
+  const { data, isLoading } = useGetPanier();
   const {mutate , isPending} = useSupprimerPanier()
 
   if (isLoading) {
     return (
       <div className="container mx-auto">
         <p>Chargement...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="container mx-auto">
-        <p>Erreur: {error.message}</p>
       </div>
     );
   }

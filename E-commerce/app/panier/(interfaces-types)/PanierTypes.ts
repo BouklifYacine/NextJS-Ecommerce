@@ -1,5 +1,11 @@
 import { Categorie } from "@prisma/client";
 
+export interface SupprimerPanierResult {
+  success: boolean;
+  message: string;
+  status: number;
+}
+
 export interface ProduitInPanier {
     id: string;
     nom: string;
