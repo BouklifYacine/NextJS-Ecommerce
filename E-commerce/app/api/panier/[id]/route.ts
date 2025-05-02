@@ -20,10 +20,10 @@ export async function DELETE(request: NextRequest, { params }: Props) {
     where: {
       id,
     },
-    include: { items: true },
+    select : {userId : true}
   });
 
-  if (!panier || panier.items.length === 0) {
+  if (!panier) {
     return NextResponse.json({
       message:
         "Pas de panier disponible et ou pas de produit dans votre panier ",
