@@ -1,3 +1,4 @@
+import { auth } from "@/auth";
 import { prisma } from "@/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -6,11 +7,13 @@ interface Props {
 }
 
 export async function DELETE(request: NextRequest, { params }: Props) {
-  const userId = "cma5ilzq40000irgg8rpod0l9";
+
+  const session = await auth()
+  const userId = session?.user?.id;
 
   const { id } = await params;
 
-  if (!userId) {
+  if (!userId || !session) {
     return NextResponse.json({
       message: "Vous devez etre connecté pour voir votre panier ",
     }, {status : 400});

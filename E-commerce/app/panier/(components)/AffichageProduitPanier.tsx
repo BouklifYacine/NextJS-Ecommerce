@@ -2,6 +2,7 @@
 
 import React from "react";
 import { useGetPanier } from "../(hook)/useGetPanier";
+import { Trash2 } from "lucide-react";
 
 const AffichageProduitPanier = () => {
   const { data, isLoading, error } = useGetPanier();
@@ -36,9 +37,11 @@ const AffichageProduitPanier = () => {
       <div className="container mx-auto">
         <h1>Mon Panier</h1>
 
+        <Trash2 className="text-red-500" size={44}></Trash2>
+
         <div>
-          <p>Prix total du panier : {prixTotal ? prixTotal : 0 } euros</p>
-          <p>Prix hors taxe : {prixHorsTaxe}</p>
+          <p>Prix total du panier : {prixTotal ? prixTotal.toFixed(2) : 0 } €</p>
+          <p>Prix hors taxe : {prixHorsTaxe.toFixed(2)} €</p>
         </div>
 
         {produitPanier && produitPanier.length > 0 ? (
@@ -61,6 +64,7 @@ const AffichageProduitPanier = () => {
                 Total pour cet article:{" "}
                 {produit.quantite * produit.produit.prix} €
               </p>
+              <p><Trash2 className="text-red-500"></Trash2></p>
             </div>
           ))
         ) : (
