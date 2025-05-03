@@ -1,12 +1,13 @@
 "use client";
 
 import React from "react";
-import { useGetPanier, useSupprimerPanier } from "../(hook)/useGetPanier";
+import { useGetPanier, useSupprimerArticlePanier, useSupprimerPanier } from "../(hook)/useGetPanier";
 import { Trash2 } from "lucide-react";
 
 const AffichageProduitPanier = () => {
   const { data, isLoading } = useGetPanier();
   const {mutate , isPending} = useSupprimerPanier()
+  const {mutate : supprimerArticle, isPending: Pending} = useSupprimerArticlePanier()
 
   if (isLoading) {
     return (
@@ -18,10 +19,13 @@ const AffichageProduitPanier = () => {
 
   const produitPanier = data?.panier?.items;
   const PanierId = data?.panier.id
+ 
 
   const supprimerPanier = () => {
     mutate(PanierId!)
   }
+
+
 
   const prixTotal = produitPanier?.reduce((acc, item) => {
     const totalProduit = item.quantite * item.produit.prix;
@@ -44,9 +48,9 @@ const AffichageProduitPanier = () => {
         </div>
 
         {produitPanier && produitPanier.length > 0 ? (
-          produitPanier.map((produit) => (
+          produitPanier.map((item) => (
             <div
-              key={produit.id}
+              key={item.id}
               style={{
                 borderBottom: "1px solid #ccc",
                 marginBottom: "10px",
@@ -54,16 +58,17 @@ const AffichageProduitPanier = () => {
               }}
             >
               <p>
-                <strong>{produit.produit.nom}</strong>
+                <strong>{item.produit.nom}</strong>
               </p>
-              <p>Description: {produit.produit.description}</p>
-              <p>Quantité: {produit.quantite}</p>
-              <p>Prix unitaire: {produit.produit.prix} €</p>
+              <p>Description: {item.produit.description}</p>
+              <p>Quantité: {item.quantite}</p>
+              <p>Prix unitaire: {item.produit.prix} €</p>
               <p>
                 Total pour cet article:{" "}
-                {produit.quantite * produit.produit.prix} €
+                {item.quantite * item.produit.prix} €
               </p>
-              <p><Trash2 className="text-red-500"></Trash2></p>
+        
+<button onClick={() => supprimerArticle(item.produit.id)}  disabled={Pending}>  <Trash2 className={`${Pending ? "text-red-500 opacity-50" : "text-red-500"} cursor-pointer`} size={44}></Trash2></button>
             </div>
           ))
         ) : (
