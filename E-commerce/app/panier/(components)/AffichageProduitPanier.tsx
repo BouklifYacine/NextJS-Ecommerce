@@ -35,7 +35,8 @@ const AffichageProduitPanier = () => {
       <div className="container mx-auto">
         <h1>Mon Panier</h1>
 
-        <Trash2 onClick={supprimerPanier} className="text-red-500 cursor-pointer" size={44}></Trash2>
+<button onClick={supprimerPanier}  disabled={isPending}>  <Trash2 className={`${isPending ? "text-red-500 opacity-50" : "text-red-500"} cursor-pointer`} size={44}></Trash2></button>
+      
 
         <div>
           <p>Prix total du panier : {prixTotal ? prixTotal.toFixed(2) : 0 } €</p>

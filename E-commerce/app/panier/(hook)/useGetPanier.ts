@@ -20,7 +20,7 @@ export function useGetPanier() {
 export function useSupprimerPanier() {
   const queryClient = useQueryClient();
   const queryKey = ["Panier"];
-
+  
   return useMutation<
     SupprimerPanierResult,
     Error,
@@ -34,33 +34,41 @@ export function useSupprimerPanier() {
       }
       return result;
     },
-
-    onMutate: async () => {
+    
+    onMutate: async (panierId) => {
+      
       await queryClient.cancelQueries({ queryKey });
-
-      const previousPanierData =
+      
+      const previousPanierData = 
         queryClient.getQueryData<PanierApiResponse>(queryKey);
-
-      queryClient.setQueryData<PanierApiResponse | undefined>(
-        queryKey,
-        undefined
-      );
-
+      
+      if (previousPanierData && previousPanierData.panier) {
+        queryClient.setQueryData<PanierApiResponse>(queryKey, {
+          ...previousPanierData,
+          panier: {
+            ...previousPanierData.panier,
+            items: [] 
+          }
+        });
+      }
+      
       return { previousPanierData };
     },
-
+    
     onError: (error, variables, context) => {
       toast.error(`Erreur: ${error.message}`);
+      
       if (context?.previousPanierData) {
         queryClient.setQueryData(queryKey, context.previousPanierData);
         console.log("Cache restauré après erreur.");
       }
     },
-
+    
     onSettled: () => {
+      // Rafraîchir les données après la mutation
       queryClient.invalidateQueries({ queryKey });
     },
-
+    
     onSuccess: (data) => {
       toast.success(data.message);
     },
