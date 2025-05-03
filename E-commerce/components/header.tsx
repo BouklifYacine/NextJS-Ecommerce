@@ -4,7 +4,7 @@ import Image from "next/image";
 import React from "react";
 import LogoLiverpool from "@/app/public/Logo_FC_Liverpool.svg.png";
 import Link from "next/link";
-import { CreditCard, DoorOpen, Settings, ShoppingBasket, Table } from "lucide-react";
+import { CreditCard, DoorOpen, Settings, ShoppingBasket, Star, Table } from "lucide-react";
 import { Search } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useSession } from "next-auth/react";
@@ -26,9 +26,18 @@ import { AdminAction } from "@/app/(actions)/AdminAction";
 import LogoPanier from "./panier/LogoPanier";
 import FavoriCoeur from "./FavoriCoeur/FavoriCoeur";
 import { Input } from "./ui/input";
+import { useGetPanier } from "@/app/panier/(hook)/useGetPanier";
+import { useFavoris } from "@/app/(hooks)/useFavoris";
 
 const Header = () => {
   const { data: session } = useSession();
+  const {data : donnees} = useGetPanier()
+  const {data : favoris , isLoading} = useFavoris()
+
+  const nombreFavoris = favoris?.nombrefavoris || 0
+
+  const nombreArticle = donnees?.panier?.items?.reduce((total, item) => total + (item?.quantite || 0), 0) || 0;
+
 
   const { data } = useQuery({
     queryKey: ["userStatus"],
@@ -60,7 +69,7 @@ const Header = () => {
           </Link>
 
           <div className="md:hidden">
-            <MenuDeroulant />
+            <MenuDeroulant nombreArticle={nombreArticle} nombreFavoris={nombreFavoris} />
           </div>
 
           <div className="hidden md:flex flex-1 items-center justify-center mx-4">
@@ -171,8 +180,14 @@ const Header = () => {
                     <DropdownMenuGroup>
                     <DropdownMenuItem>
                 <ShoppingBasket className="mr-2 h-4 w-4" />
-                <span>Panier (2)</span>
+                <span>Panier ({nombreArticle})</span>
               </DropdownMenuItem>
+
+              <DropdownMenuItem>
+                              <Star className="mr-2 h-4 w-4" />
+                              <span>Favoris ({nombreFavoris})</span>
+                            </DropdownMenuItem>
+              
                       <DropdownMenuItem>
                         <Settings className="mr-2 h-4 w-4 cursor-pointer" />
                         <Link
@@ -186,8 +201,8 @@ const Header = () => {
                   </DropdownMenuContent>
                 </DropdownMenu>
                 
-                <FavoriCoeur></FavoriCoeur>
-                <LogoPanier/>
+                <FavoriCoeur nombreFavoris={nombreFavoris} isLoading={isLoading}></FavoriCoeur>
+                <LogoPanier nombreArticle={nombreArticle}  />
               </div>
             )}
           </div>

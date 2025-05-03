@@ -19,13 +19,10 @@ const AffichageProduitPanier = () => {
 
   const produitPanier = data?.panier?.items;
   const PanierId = data?.panier.id
- 
 
   const supprimerPanier = () => {
     mutate(PanierId!)
   }
-
-
 
   const prixTotal = produitPanier?.reduce((acc, item) => {
     const totalProduit = item.quantite * item.produit.prix;

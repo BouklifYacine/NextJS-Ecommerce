@@ -27,7 +27,13 @@ import { useQuery } from "@tanstack/react-query";
 import { UtilisateurAbonner } from "@/app/(actions)/UserAbonnementAction";
 import { AdminAction } from "@/app/(actions)/AdminAction";
 
-export function MenuDeroulant() {
+interface Props {
+  nombreArticle : number,
+  nombreFavoris : number,
+
+}
+
+export function MenuDeroulant({nombreArticle,nombreFavoris} : Props) {
   const { data: session } = useSession();
 
   const { data } = useQuery({
@@ -100,11 +106,11 @@ export function MenuDeroulant() {
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <ShoppingBasket className="mr-2 h-4 w-4" />
-                <span>Panier (2)</span>
+                <span>Panier ({nombreArticle})</span>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Star className="mr-2 h-4 w-4" />
-                <span>Favoris (19)</span>
+                <span>Favoris ({nombreFavoris})</span>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Settings className="mr-2 h-4 w-4" />
