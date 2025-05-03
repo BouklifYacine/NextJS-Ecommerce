@@ -4,7 +4,7 @@ import {
   PanierApiResponse,
   SupprimerPanierResult,
 } from "../(interfaces-types)/PanierTypes";
-import { SupprimerPanier } from "../(actions)/PanierActions";
+import { SupprimerArticlePanier, SupprimerPanier } from "../(actions)/PanierActions";
 import toast from "react-hot-toast";
 
 export function useGetPanier() {
@@ -71,6 +71,83 @@ export function useSupprimerPanier() {
     
     onSuccess: (data) => {
       toast.success(data.message);
+    },
+  });
+}
+
+export function useSupprimerArticlePanier() {
+  const queryClient = useQueryClient();
+  const queryKey = ["Panier"];
+  
+  return useMutation<
+    SupprimerPanierResult,
+    Error,
+    string,
+    { 
+      previousPanierData?: PanierApiResponse;
+      articleId: string;
+    }
+  >({
+    mutationFn: async (articleId: string): Promise<SupprimerPanierResult> => {
+      const result = await SupprimerArticlePanier(articleId);
+      
+      if (!result.success) {
+        throw new Error(result.message || "La suppression de l'article a échoué.");
+      }
+      
+      return result
+    },
+    
+    onMutate: async (articleId) => {
+      await queryClient.cancelQueries({ queryKey });
+      
+      const previousPanierData = 
+        queryClient.getQueryData<PanierApiResponse>(queryKey);
+      
+      if (previousPanierData?.panier.items) {
+        queryClient.setQueryData<PanierApiResponse>(queryKey, {
+          ...previousPanierData,
+          panier: {
+            ...previousPanierData.panier,
+            items: previousPanierData.panier.items.filter(
+              item => item.produitId !== articleId
+            )
+          }
+        });
+      }
+      
+      return { 
+        previousPanierData,
+        articleId 
+      };
+    },
+    
+    onError: (error, variables, context) => {
+      toast.error(`Erreur: ${error.message}`);
+      
+      if (context?.previousPanierData) {
+        queryClient.setQueryData(queryKey, context.previousPanierData);
+      }
+    },
+    
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey });
+    },
+    
+    onSuccess: (data) => {
+      toast.success(data.message);
+      
+      if (data.message.includes("Panier supprimé")) {
+        queryClient.setQueryData<PanierApiResponse>(queryKey, {
+          panier: {
+            id: "",
+            userId: "",
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            items: []
+          }
+        });
+      }
     },
   });
 }
