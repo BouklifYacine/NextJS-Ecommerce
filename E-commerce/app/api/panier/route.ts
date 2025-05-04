@@ -39,7 +39,10 @@ export async function GET(request: NextRequest){
 
 export async function POST(request: NextRequest) {
   try {
-    const userId = "cma5ilzq40000irgg8rpod0l9"; 
+    const session = await auth()
+    const userId = session?.user?.id; 
+
+    if(!userId  || !session) return NextResponse.json({message : "Vous devez etre connecté"}, {status : 400})
     const { produitId, quantite } = await request.json();
 
     const validation = SchemaPanier.safeParse({ produitId, quantite });
@@ -64,7 +67,7 @@ export async function POST(request: NextRequest) {
 
     const resultat = await prisma.$transaction(async (tx) => {
       let panier = await tx.panier.findUnique({
-        where: { userId },
+        where: { userId : userId },
         include: { items: true },
       });
 
