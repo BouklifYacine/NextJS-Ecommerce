@@ -18,7 +18,6 @@ interface Props {
   stock?: number
   image?: string
   categorie?: string,
-  refetch: (options?: RefetchOptions | undefined) => Promise<QueryObserverResult<reponseApiProduit, Error>>;
 }
 
 const calculerPromo = (prix: number, prixPromo: number) =>
@@ -33,7 +32,6 @@ export default function BlocProduitUnique({
   prixPromo,
   image,
   categorie,
-  refetch
 }: Props) {
   const [quantite, setQuantite] = useState(1)
   const { mutate: ajouter, isPending } = useAjouterAuPanier()
@@ -63,7 +61,6 @@ export default function BlocProduitUnique({
           </Button>
         </Link>
 
-        <Button onClick={() => refetch()}>Refetch</Button>
       </div>
 
       <div className="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-16 p-4 md:p-16">
