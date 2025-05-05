@@ -5,7 +5,7 @@ import { useProduits } from "@/app/dashboard/produits/(hooks)/UseProduits";
 import { StoreFiltreProduit } from "@/app/(stores)/FiltreProduit";
 
 const BlocProduitSite = () => {
-  const { data, isLoading } = useProduits();
+  const { data, isPending } = useProduits();
 
   const {
     recherche,
@@ -38,7 +38,7 @@ const BlocProduitSite = () => {
       return 0;
     });
 
-  if (isLoading) return <p>Chargement en cours...</p>;
+  if (isPending) return <p>Chargement en cours...</p>;
 
   return (
     <div className="flex flex-wrap justify-center gap-8">

@@ -11,11 +11,13 @@ interface PropsId {
 }
 
 const ProduitId = ({ params }: PropsId) => {
-  const { data: produitId, isLoading, error } = useProduitsId(params.id);
+  const { data: produitId, isPending, error, refetch, isRefetching} = useProduitsId(params.id);
 
   if (error) return <p>Il y'a une erreur </p>;
 
-  if (isLoading) return <SkeletonProduitUnique></SkeletonProduitUnique>;
+  if (isPending) return <SkeletonProduitUnique></SkeletonProduitUnique>;
+
+  if(isRefetching) return <SkeletonProduitUnique></SkeletonProduitUnique>
   return (
     <>
       <BlocProduitUnique
@@ -27,6 +29,7 @@ const ProduitId = ({ params }: PropsId) => {
         stock={produitId?.quantiteStock}
         image={produitId?.images[0].urlImage}
         categorie={produitId?.categorie}
+        refetch={refetch}
       ></BlocProduitUnique>
     </>
   );

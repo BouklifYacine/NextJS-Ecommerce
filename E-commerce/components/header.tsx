@@ -27,7 +27,7 @@ import LogoPanier from "./panier/LogoPanier";
 import FavoriCoeur from "./FavoriCoeur/FavoriCoeur";
 import { Input } from "./ui/input";
 import { useGetPanier } from "@/app/panier/(hook)/useGetPanier";
-import { useFavoris } from "@/app/(hooks)/useFavoris";
+import { useFavoris } from "@/app/favoris/(hooks)/useFavoris";
 
 const Header = () => {
   const { data: session } = useSession();

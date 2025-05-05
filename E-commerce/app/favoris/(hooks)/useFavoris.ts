@@ -1,7 +1,8 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { AjouterFavoris, SupprimerFavoris } from "../(actions)/FavorisAction";
-import { Favori } from "../(types)/favoris";
+import { AjouterFavoris, SupprimerFavoris } from "../../(actions)/FavorisAction";
+import { Favori } from "../../(types)/favoris";
+import { PanierApiResponse } from "@/app/panier/(interfaces-types)/PanierTypes";
 
 interface Produit {
   id: string;

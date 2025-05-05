@@ -10,7 +10,7 @@ import Image from "next/image";
 import Visa from "@/app/public/visa-logo-svgrepo-com.svg";
 import { Badge } from "../ui/badge";
 import Link from "next/link";
-import { useAjouterFavoris, useFavoris, useSupprimerFavoris } from "@/app/(hooks)/useFavoris";
+import { useAjouterFavoris, useFavoris, useSupprimerFavoris } from "@/app/favoris/(hooks)/useFavoris";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
@@ -39,7 +39,7 @@ const BlocUnique = ({
   const { mutate: ajouterFavori, isPending: ajoutEnCours } = useAjouterFavoris();
   const { mutate: supprimerFavori, isPending: suppressionEnCours } = useSupprimerFavoris();
   const { data: Favoris } = useFavoris();
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const Router = useRouter()
 
   const estFavori = Favoris?.produits?.some?.((p) => p.id === id) ?? false;

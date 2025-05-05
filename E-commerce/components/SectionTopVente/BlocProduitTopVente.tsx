@@ -5,9 +5,9 @@ import BlocUnique from "./BlocUnique";
 import { useProduits } from "@/app/dashboard/produits/(hooks)/UseProduits";
 
 const BlocProduitTopVente = () => {
-  const { data, isLoading } = useProduits();
+  const { data, isPending } = useProduits();
 
-  if (isLoading) return <p>Chargement en cours...</p>;
+  if (isPending) return <p>Chargement en cours...</p>;
 
   const TableauTopVente = data?.slice(0, 3);
 

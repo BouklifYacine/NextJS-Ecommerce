@@ -1,7 +1,6 @@
 "use client";
 
-import { useFavoris, useSupprimerFavoris } from "@/app/(hooks)/useFavoris";
-import { Button } from "@/components/ui/button";
+import { useFavoris, useSupprimerFavoris } from "@/app/favoris/(hooks)/useFavoris";
 import { ShoppingCart, Trash2 } from "lucide-react";
 import Image from "next/image";
 import React from "react";

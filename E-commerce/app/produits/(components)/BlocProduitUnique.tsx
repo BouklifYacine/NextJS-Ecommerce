@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button"
 import { MoveLeft, ShoppingCart } from "lucide-react"
 import toast from "react-hot-toast"
 import { useAjouterAuPanier } from "@/app/panier/(hook)/useGetPanier"
+import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query"
+import { reponseApiProduit } from "@/app/api/admin/produits/(interface-types)/interface"
 
 interface Props {
   id?: string
@@ -15,7 +17,8 @@ interface Props {
   nom?: string
   stock?: number
   image?: string
-  categorie?: string
+  categorie?: string,
+  refetch: (options?: RefetchOptions | undefined) => Promise<QueryObserverResult<reponseApiProduit, Error>>;
 }
 
 const calculerPromo = (prix: number, prixPromo: number) =>
@@ -30,6 +33,7 @@ export default function BlocProduitUnique({
   prixPromo,
   image,
   categorie,
+  refetch
 }: Props) {
   const [quantite, setQuantite] = useState(1)
   const { mutate: ajouter, isPending } = useAjouterAuPanier()
@@ -58,6 +62,8 @@ export default function BlocProduitUnique({
             Retour
           </Button>
         </Link>
+
+        <Button onClick={() => refetch()}>Refetch</Button>
       </div>
 
       <div className="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-16 p-4 md:p-16">
