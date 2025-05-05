@@ -4,8 +4,68 @@ import {
   PanierApiResponse,
   SupprimerPanierResult,
 } from "../(interfaces-types)/PanierTypes";
-import { SupprimerArticlePanier, SupprimerPanier } from "../(actions)/PanierActions";
+import { AjouterAuPanier, SupprimerArticlePanier, SupprimerPanier } from "../(actions)/PanierActions";
 import toast from "react-hot-toast";
+
+type Variables = { produitId: string; quantite: number }
+type Result = { success: boolean; message: string }
+
+type PanierItem = { produitId: string; quantite: number }
+type PanierCache = { panier: { items: PanierItem[] } }
+
+export function useAjouterAuPanier() {
+  const queryClient = useQueryClient()
+  const queryKey = ["Panier"]
+
+  return useMutation<
+    Result,
+    Error,
+    Variables,
+    { previousData?: PanierCache }
+  >({
+    mutationFn: async ({ produitId, quantite }) => {
+      const res = await AjouterAuPanier(produitId, quantite)
+      if (!res.success) throw new Error(res.message)
+      return res
+    },
+
+    onMutate: async ({ produitId, quantite }) => {
+      await queryClient.cancelQueries({ queryKey })
+      const previousData = queryClient.getQueryData<PanierCache>(queryKey)
+
+      const oldItems = previousData?.panier.items ?? []
+      const exists = oldItems.find((i) => i.produitId === produitId)
+      const newItems = exists
+        ? oldItems.map((i) =>
+            i.produitId === produitId
+              ? { ...i, quantite: i.quantite + quantite }
+              : i
+          )
+        : [...oldItems, { produitId, quantite }]
+
+      queryClient.setQueryData<PanierCache>(queryKey, {
+        panier: { items: newItems },
+      })
+
+      return { previousData }
+    },
+
+    onError: (err, _vars, ctx) => {
+      toast.error(err.message)
+      if (ctx?.previousData) {
+        queryClient.setQueryData(queryKey, ctx.previousData)
+      }
+    },
+
+    onSuccess: (data) => {
+      toast.success(data.message)
+    },
+
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey })
+    },
+  })
+}
 
 export function useGetPanier() {
   return useQuery<PanierApiResponse>({

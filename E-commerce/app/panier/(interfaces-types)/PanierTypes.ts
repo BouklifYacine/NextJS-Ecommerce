@@ -5,7 +5,6 @@ export interface SupprimerPanierResult {
   message: string;
   status: number;
 }
-
 export interface ProduitInPanier {
     id: string;
     nom: string;
